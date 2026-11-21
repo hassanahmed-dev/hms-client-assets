@@ -36,6 +36,19 @@ function CoffeeScene() {
           <g transform={`translate(${x} ${y}) scale(${s})`}><ellipse rx="17" ry="11" fill="#4a2a14" /><path d="M-14 1q14-9 28 0" stroke="#24120a" strokeWidth="3" fill="none" /></g>
         </motion.g>
       ))}
+      {/* coffee splash crown + flying droplets, triggered as the pour hits the cup */}
+      <motion.path d="M21 190 L66 175 L41 154 L78 146 L47 113 L101 122 L100 98 L132 103 L141 79 L170 92 L185 46 L210 90 L236 72 L250 97 L291 73 L285 112 L317 110 L312 133 L374 128 L330 160 L369 171 L336 190 Q200 230 21 190z" fill="#5a2f17" opacity="0.9"
+        initial={{ scale: 0, opacity: 0 }} animate={{ scale: [0, 1.08, 1], opacity: [0, 0.95, 0.85] }}
+        transition={{ delay: 1.75, duration: 0.9, ease: "easeOut" }} style={{ transformOrigin: "200px 200px" }} />
+      <motion.path d="M21 190 L66 175 L41 154 L78 146 L47 113 L101 122 L100 98 L132 103 L141 79 L170 92 L185 46 L210 90 L236 72 L250 97 L291 73 L285 112 L317 110 L312 133 L374 128 L330 160 L369 171 L336 190 Q200 230 21 190z" fill="#8a5530" opacity="0.7" transform="translate(200 200) scale(.78) translate(-200 -200)"
+        initial={{ scale: 0, opacity: 0 }} animate={{ scale: [0, 1.05, 1], opacity: [0, 0.8, 0.7] }}
+        transition={{ delay: 1.85, duration: 0.9, ease: "easeOut" }} style={{ transformOrigin: "200px 200px" }} />
+      {[[-187, -24, 5], [-202, -65, 8], [-159, -87, 6], [-133, -114, 9], [-112, -152, 5], [-78, -189, 9], [-21, -158, 6], [25, -188, 11], [73, -176, 5], [117, -159, 9], [148, -127, 5], [168, -92, 5], [210, -68, 6], [204, -26, 8]].map(([dx, dy, r], i) => (
+        <motion.circle key={i} cx="200" cy="175" r={r} fill={i % 3 ? "#6b3a1d" : "#a0663a"}
+          initial={{ x: 0, y: 0, opacity: 0, scale: 0.3 }}
+          animate={{ x: [0, dx, dx * 1.08], y: [0, dy, dy + 60], opacity: [0, 1, 0], scale: [0.3, 1, 0.7] }}
+          transition={{ duration: 1.6, delay: 1.8 + (i % 5) * 0.05, repeat: Infinity, repeatDelay: 4.2, ease: "easeOut" }} />
+      ))}
       <motion.g initial={{ x: -320, y: -280, rotate: -140, scale: 0.35, opacity: 0 }} animate={{ x: 0, y: 0, rotate: 0, scale: 1, opacity: 1 }}
         transition={{ duration: 1.5, ease: [0.2, 0.9, 0.3, 1.15], delay: 0.2 }} style={{ transformOrigin: "200px 280px" }}>
         <motion.g animate={{ y: [0, -10, 0] }} transition={{ duration: 4.5, repeat: Infinity, delay: 2.6, ease: "easeInOut" }}>
@@ -114,6 +127,16 @@ function Visual() {
         <span className="relative grid h-10 w-10 place-items-center rounded-xl bg-card"><Clock className="h-5 w-5 text-primary" /></span>
         <div><p className="text-sm font-bold leading-tight">{st ? (st.open ? "Open now" : "Opens at " + (b.hours.open > 12 ? b.hours.open - 12 + " PM" : b.hours.open + " AM")) : "Open daily"}</p><p className="text-[0.7rem] text-muted">{b.hours.text}</p></div>
       </Chip>
+      {b.scene === "grill" && sig[1] && (
+        <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 2.5, duration: 0.8, ease }} className="absolute -right-3 bottom-1/4 z-10 hidden sm:block">
+          <div className="card animate-float p-2 [animation-delay:-3s]"><Art t={sig[1]!.t} c={sig[1]!.c} logo={b.cupLogo} className="h-20 w-20" /></div>
+        </motion.div>
+      )}
+      {b.scene === "grill" && sig[2] && (
+        <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 2.8, duration: 0.8, ease }} className="absolute left-1/3 -top-2 z-10 hidden sm:block">
+          <div className="card animate-float-slow p-1.5 [animation-delay:-6s]"><Art t={sig[2]!.t} c={sig[2]!.c} logo={b.cupLogo} className="h-14 w-14" /></div>
+        </motion.div>
+      )}
       {b.scene !== "coffee" && sig[0] && (
         <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 2.2, duration: 0.8, ease }} className="absolute -left-2 top-1/3 z-10 hidden sm:block">
           <div className="card animate-float-slow p-2"><Art t={sig[0]!.t} c={sig[0]!.c} logo={b.cupLogo} className="h-20 w-20" /></div>

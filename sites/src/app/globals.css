@@ -52,3 +52,16 @@
 .flicker { animation: flicker 4s linear infinite; }
 @keyframes flicker { 0%,19%,21%,23%,25%,54%,56%,100% { opacity: 1; } 20%,24%,55% { opacity: .55; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; } }
+
+/* ambient background pieces */
+.amb-bob { animation: amb-bob 11s ease-in-out infinite; will-change: transform; }
+@keyframes amb-bob { 0%,100% { transform: translate3d(0,0,0) rotate(0deg); } 33% { transform: translate3d(10px,-18px,0) rotate(8deg); } 66% { transform: translate3d(-8px,12px,0) rotate(-6deg); } }
+/* flowing milk / sauce waves */
+.wave { animation: wave 20s linear infinite; will-change: transform; }
+@keyframes wave { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* grill embers rising */
+.ember { position: absolute; bottom: -20px; border-radius: 9999px; background: radial-gradient(circle, #ffd27a 0%, #ff7a1f 55%, transparent 75%); box-shadow: 0 0 10px 2px rgba(255,120,30,.55); animation: ember 9s linear infinite; opacity: 0; }
+@keyframes ember { 0% { transform: translate3d(0,0,0) scale(1); opacity: 0; } 10% { opacity: .95; } 50% { transform: translate3d(30px,-55vh,0) scale(.8); } 85% { opacity: .5; } 100% { transform: translate3d(-20px,-110vh,0) scale(.3); opacity: 0; } }
+/* drifting smoke */
+.smoke { animation: smoke 22s ease-in-out infinite; }
+@keyframes smoke { 0%,100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(80px,-60px,0) scale(1.25); } }
