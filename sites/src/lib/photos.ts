@@ -43,7 +43,8 @@ const P: Record<string, string[]> = {
 };
 
 const RULES: [RegExp, string][] = [
-  [/water/i, "water"],
+  [/^still water$|^water$/i, "water"],
+  [/sheesha|shisha|hookah/i, "hookah"],
   [/frappe|cold coffee|affogato/i, "frappe"],
   [/iced tea|tea orange|tea peach/i, "icedtea"],
   [/fizz|mocktail|mojito|margarita|lagoon/i, "mocktail"],

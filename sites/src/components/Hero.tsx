@@ -11,7 +11,7 @@ function Rotating({ words }: { words: string[] }) {
   const [i, setI] = useState(0);
   useEffect(() => { const t = setInterval(() => setI((p) => (p + 1) % words.length), 2600); return () => clearInterval(t); }, [words.length]);
   return (
-    <span className="relative block h-[1.12em] overflow-hidden">
+    <span className="relative block h-[1.12em] overflow-hidden" style={{ clipPath: "inset(0 -0.3em 0 0)" }}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span key={words[i]} initial={{ y: "105%" }} animate={{ y: "0%" }} exit={{ y: "-105%" }}
           transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }} className="text-gradient absolute left-0 top-0 whitespace-nowrap">{words[i]}</motion.span>
