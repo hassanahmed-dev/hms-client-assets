@@ -84,7 +84,7 @@ function ItemCard({ it, big }: { it: import("@/brands/types").Item; big?: boolea
   return (
     <TiltCard className="overflow-hidden" max={5}>
       <div className={cn("relative overflow-hidden rounded-t-[inherit]", big ? "h-72" : "h-52")}>
-        <img src={photoFor(it.n, it.t, ...SZ.card)} alt={it.n} style={lqip(photoFor(it.n, it.t, ...SZ.card))} decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-[1.1s] ease-out group-hover:scale-110" />
+        <img src={photoFor(it.n, it.t, ...SZ.card)} alt={it.n} style={lqip(photoFor(it.n, it.t, ...SZ.card))} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-[1.1s] ease-out group-hover:scale-110" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/10" />
         {it.tag && <span className="absolute left-4 top-4 rounded-full bg-brand-gradient px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-ink">{it.tag}</span>}
         <span className="absolute bottom-3 right-3 rounded-full bg-black/60 px-3 py-1 font-display text-base text-white backdrop-blur">{rs(it.p)}</span>

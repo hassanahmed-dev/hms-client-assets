@@ -17,7 +17,7 @@ export function RevealPhoto({ src, alt, className, from = "bottom" }: { src: str
   return (
     <motion.div ref={ref} initial={{ clipPath: start }} whileInView={{ clipPath: "inset(0 0 0 0)" }} viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }} className={`relative overflow-hidden ${className || ""}`}>
-      <motion.img style={{ y, ...lqip(src) }} src={src} alt={alt} decoding="async" className="absolute inset-[-14%_0] h-[128%] w-full object-cover" />
+      <motion.img style={{ y, ...lqip(src) }} src={src} alt={alt} loading="lazy" decoding="async" className="absolute inset-[-14%_0] h-[128%] w-full object-cover" />
     </motion.div>
   );
 }
@@ -107,7 +107,7 @@ export function TasteReel() {
         <motion.div ref={track} style={{ x }} className="mt-10 flex gap-5 pl-[max(1rem,calc((100vw-82rem)/2+2.5rem))] pr-6 will-change-transform">
           {reel.map((it, i) => (
             <figure key={it.n} className={`group relative shrink-0 overflow-hidden rounded-[1.75rem] ${i % 3 === 1 ? "h-[52vh] w-[min(70vw,24rem)] self-end" : "h-[60vh] w-[min(78vw,30rem)]"}`}>
-              <img src={photoFor(it.n, it.t, ...SZ.reel)} alt={it.n} style={lqip(photoFor(it.n, it.t, ...SZ.reel))} decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-[1.2s] group-hover:scale-110" />
+              <img src={photoFor(it.n, it.t, ...SZ.reel)} alt={it.n} style={lqip(photoFor(it.n, it.t, ...SZ.reel))} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-[1.2s] group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
               <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
                 <div>
