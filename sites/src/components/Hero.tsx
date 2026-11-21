@@ -37,12 +37,16 @@ function CoffeeScene() {
         </motion.g>
       ))}
       {/* coffee splash crown + flying droplets, triggered as the pour hits the cup */}
-      <motion.path d="M21 190 L66 175 L41 154 L78 146 L47 113 L101 122 L100 98 L132 103 L141 79 L170 92 L185 46 L210 90 L236 72 L250 97 L291 73 L285 112 L317 110 L312 133 L374 128 L330 160 L369 171 L336 190 Q200 230 21 190z" fill="#5a2f17" opacity="0.9"
+      <motion.path d="M68 214 Q74 202 45 194 Q16 187 43 182 Q70 177 51 166 Q31 155 59 155 Q87 156 68 140 Q49 124 76 130 Q103 135 99 123 Q95 111 114 117 Q133 124 126 102 Q120 80 140 95 Q159 110 161 86 Q163 63 177 83 Q192 104 201 94 Q210 83 217 98 Q223 112 240 94 Q257 76 256 97 Q254 117 270 110 Q286 103 283 118 Q279 132 308 120 Q338 109 324 126 Q310 143 342 139 Q375 134 349 150 Q323 166 334 171 Q345 175 337 182 Q329 190 351 197 Q373 204 353 209 L332 214 Q200 236 68 214z" fill="#5a2f17" opacity="0.9"
         initial={{ scale: 0, opacity: 0 }} animate={{ scale: [0, 1.08, 1], opacity: [0, 0.95, 0.85] }}
         transition={{ delay: 1.75, duration: 0.9, ease: "easeOut" }} style={{ transformOrigin: "200px 200px" }} />
-      <motion.path d="M21 190 L66 175 L41 154 L78 146 L47 113 L101 122 L100 98 L132 103 L141 79 L170 92 L185 46 L210 90 L236 72 L250 97 L291 73 L285 112 L317 110 L312 133 L374 128 L330 160 L369 171 L336 190 Q200 230 21 190z" fill="#8a5530" opacity="0.7" transform="translate(200 200) scale(.78) translate(-200 -200)"
+      <motion.path d="M68 214 Q74 202 45 194 Q16 187 43 182 Q70 177 51 166 Q31 155 59 155 Q87 156 68 140 Q49 124 76 130 Q103 135 99 123 Q95 111 114 117 Q133 124 126 102 Q120 80 140 95 Q159 110 161 86 Q163 63 177 83 Q192 104 201 94 Q210 83 217 98 Q223 112 240 94 Q257 76 256 97 Q254 117 270 110 Q286 103 283 118 Q279 132 308 120 Q338 109 324 126 Q310 143 342 139 Q375 134 349 150 Q323 166 334 171 Q345 175 337 182 Q329 190 351 197 Q373 204 353 209 L332 214 Q200 236 68 214z" fill="#8a5530" opacity="0.7" transform="translate(200 200) scale(.78) translate(-200 -200)"
         initial={{ scale: 0, opacity: 0 }} animate={{ scale: [0, 1.05, 1], opacity: [0, 0.8, 0.7] }}
         transition={{ delay: 1.85, duration: 0.9, ease: "easeOut" }} style={{ transformOrigin: "200px 200px" }} />
+      {[[-6, 186, 6], [11, 149, 7], [31, 114, 7], [83, 99, 7], [110, 63, 7], [158, 44, 5], [212, 68, 7], [264, 60, 5], [297, 91, 7], [354, 97, 5], [396, 126, 5], [362, 172, 5], [394, 205, 5]].map(([x, y, r], i) => (
+        <motion.circle key={"b" + i} cx={x} cy={y} r={r} fill="#6b3a1d" initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 0.9 }}
+          transition={{ delay: 1.95 + i * 0.03, type: "spring", stiffness: 200 }} style={{ transformOrigin: `${x}px ${y}px` }} />
+      ))}
       {[[-187, -24, 5], [-202, -65, 8], [-159, -87, 6], [-133, -114, 9], [-112, -152, 5], [-78, -189, 9], [-21, -158, 6], [25, -188, 11], [73, -176, 5], [117, -159, 9], [148, -127, 5], [168, -92, 5], [210, -68, 6], [204, -26, 8]].map(([dx, dy, r], i) => (
         <motion.circle key={i} cx="200" cy="175" r={r} fill={i % 3 ? "#6b3a1d" : "#a0663a"}
           initial={{ x: 0, y: 0, opacity: 0, scale: 0.3 }}
