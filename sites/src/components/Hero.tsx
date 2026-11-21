@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
 import { ArrowDown, MapPin, Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { rs } from "@/brands";
-import { img, photoFor, SCENES } from "@/lib/photos";
+import { heroSet, img, lqip, photoFor, SCENES, SZ } from "@/lib/photos";
 import { useSite } from "./Providers";
 import { Btn, Stars, ease, useOpen } from "./ui";
 
@@ -57,7 +57,7 @@ function PickCard() {
       className="w-[19rem] overflow-hidden rounded-[1.75rem] border border-white/15 bg-black/35 p-2 backdrop-blur-xl">
       <div className="relative h-40 overflow-hidden rounded-[1.35rem]">
         <AnimatePresence initial={false}>
-          <motion.img key={it.n} src={photoFor(it.n, it.t, 640, 360)} alt={it.n} className="absolute inset-0 h-full w-full object-cover"
+          <motion.img key={it.n} src={photoFor(it.n, it.t, ...SZ.pick)} alt={it.n} style={lqip(photoFor(it.n, it.t, ...SZ.pick))} decoding="async" className="absolute inset-0 h-full w-full object-cover"
             initial={{ opacity: 0, scale: 1.2 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ opacity: { duration: 0.6 }, scale: { duration: 4.5, ease: "linear" } }} />
         </AnimatePresence>
         <span className="absolute left-3 top-3 rounded-full bg-black/55 px-3 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-white backdrop-blur">
@@ -97,7 +97,8 @@ export function Hero() {
       {/* cinematic photo background */}
       <motion.div aria-hidden style={{ y: bgY, scale: bgS }} className="absolute inset-0 -z-10">
         <AnimatePresence initial={false}>
-          <motion.img key={shots[s]} src={img(shots[s], 2000)} alt="" className="absolute inset-0 h-full w-full object-cover"
+          <motion.img key={shots[s]} src={img(shots[s], SZ.hero[0])} srcSet={heroSet(shots[s])} sizes="100vw" alt="" style={lqip(img(shots[s], SZ.hero[0]))}
+            fetchPriority={s === 0 ? "high" : "auto"} decoding="async" className="absolute inset-0 h-full w-full object-cover"
             initial={{ opacity: 0, scale: 1.18 }} animate={{ opacity: 1, scale: 1.02 }} exit={{ opacity: 0 }}
             transition={{ opacity: { duration: 1.4 }, scale: { duration: 7.5, ease: "linear" } }} />
         </AnimatePresence>

@@ -3,7 +3,22 @@
  * images.unsplash.com). These stand in until each cafe sends its own shoots.
  */
 export const img = (id: string, w = 900, h?: number) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=75&w=${w}${h ? `&h=${h}` : ""}`;
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=60&w=${w}${h ? `&h=${h}` : ""}`;
+
+/** A ~1 KB blurred preview of the same photo, shown instantly while the real one loads. */
+export const tiny = (url: string) => (url.includes("images.unsplash.com") ? url.replace(/q=\d+&w=\d+(&h=\d+)?/, "q=30&w=40&blur=60") : "");
+
+/** Inline style that paints the blurred preview behind an <img>. */
+export const lqip = (url: string) => {
+  const t = tiny(url);
+  return t ? { backgroundImage: `url("${t}")`, backgroundSize: "cover", backgroundPosition: "center" } : undefined;
+};
+
+/** Fixed sizes, so every place that shows a photo shares one cached file. */
+export const SZ = {
+  hero: [1600, 0], heroSm: [820, 0], pick: [640, 360], story: [1200, 900], reel: [700, 900], card: [640, 520], thumb: [160, 160], wide: [1400, 800],
+} as const;
+export const heroSet = (id: string) => `${img(id, SZ.heroSm[0])} ${SZ.heroSm[0]}w, ${img(id, SZ.hero[0])} ${SZ.hero[0]}w`;
 
 const P: Record<string, string[]> = {
   burger: ["1568901346375-23c9450c58cd", "1572802419224-296b0aeee0d9", "1607013251379-e6eecfffe234", "1713330801172-03f8d1c0dde7", "1586190848861-99aa4a171e90", "1610440042657-612c34d95e9f"],

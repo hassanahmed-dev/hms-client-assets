@@ -7,7 +7,7 @@ import { cn, initials } from "@/lib/utils";
 import { Marquee } from "./Marquee";
 import { Counter } from "./Counter";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
-import { img, photoFor, SCENES } from "@/lib/photos";
+import { img, lqip, photoFor, SCENES, SZ } from "@/lib/photos";
 import { RevealPhoto } from "./Showcase";
 import { useSite } from "./Providers";
 import { Btn, Heading, Stars, TiltCard, ease, useOpen, waLink } from "./ui";
@@ -21,7 +21,7 @@ export function Strip() {
           const it = b.cats.flatMap((c) => c.items).find((i) => i.n === m || m.includes(i.n) || i.n.includes(m));
           return (
             <span key={m} className="mx-5 flex items-center gap-5 font-display text-2xl text-foreground/85 sm:text-4xl">
-              {it && <img src={photoFor(it.n, it.t, 160, 160)} alt="" className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/50 sm:h-14 sm:w-14" />}
+              {it && <img src={photoFor(it.n, it.t, ...SZ.thumb)} alt="" className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/50 sm:h-14 sm:w-14" />}
               {m}<Sparkles className="h-5 w-5 text-primary" />
             </span>
           );
@@ -44,8 +44,8 @@ export function About() {
       <div className="container-x grid items-center gap-14 lg:grid-cols-2">
         <div className="relative">
           <div className="relative mx-auto grid max-w-xl grid-cols-6 grid-rows-6 gap-4" style={{ aspectRatio: "1 / 1.05" }}>
-            <RevealPhoto src={img(SCENES[b.slug].story[0], 1000, 1300)} alt={b.name} from="left" className="col-span-4 row-span-6 rounded-[2rem]" />
-            <RevealPhoto src={img(SCENES[b.slug].story[1], 700, 700)} alt={b.name} from="right" className="col-span-2 row-span-3 rounded-[1.5rem]" />
+            <RevealPhoto src={img(SCENES[b.slug].story[0], 900, 1150)} alt={b.name} from="left" className="col-span-4 row-span-6 rounded-[2rem]" />
+            <RevealPhoto src={img(SCENES[b.slug].story[1], 600, 600)} alt={b.name} from="right" className="col-span-2 row-span-3 rounded-[1.5rem]" />
             <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.5, duration: 0.8, ease }}
               className="card col-span-2 row-span-3 grid place-items-center p-3 text-center">
               <div>
@@ -84,7 +84,7 @@ function ItemCard({ it, big }: { it: import("@/brands/types").Item; big?: boolea
   return (
     <TiltCard className="overflow-hidden" max={5}>
       <div className={cn("relative overflow-hidden rounded-t-[inherit]", big ? "h-72" : "h-52")}>
-        <img src={photoFor(it.n, it.t, big ? 900 : 640, big ? 720 : 520)} alt={it.n} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-[1.1s] ease-out group-hover:scale-110" />
+        <img src={photoFor(it.n, it.t, ...SZ.card)} alt={it.n} style={lqip(photoFor(it.n, it.t, ...SZ.card))} decoding="async" className="absolute inset-0 h-full w-full object-cover transition duration-[1.1s] ease-out group-hover:scale-110" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/10" />
         {it.tag && <span className="absolute left-4 top-4 rounded-full bg-brand-gradient px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-ink">{it.tag}</span>}
         <span className="absolute bottom-3 right-3 rounded-full bg-black/60 px-3 py-1 font-display text-base text-white backdrop-blur">{rs(it.p)}</span>
@@ -193,7 +193,7 @@ export function Stats() {
     <section className="relative py-16">
       <div className="container-x">
         <div className="noise relative grid gap-8 overflow-hidden rounded-[2rem] border border-line/70 p-8 sm:grid-cols-2 sm:p-14 lg:grid-cols-4">
-          <RevealPhoto src={img(SCENES[b.slug].stats, 1800, 900)} alt="" className="!absolute inset-0" />
+          <RevealPhoto src={img(SCENES[b.slug].stats, ...SZ.wide)} alt="" className="!absolute inset-0" />
           <div aria-hidden className="absolute inset-0 bg-black/70" />
           {data.map(([v, suf, label, div]) => (
             <Reveal key={label} className="relative text-center">
@@ -379,7 +379,7 @@ export function Cta() {
       <div className="container-x">
         <Reveal dir="pop">
           <div className="noise relative overflow-hidden rounded-[2.5rem] border border-line/70 p-10 sm:p-16 lg:p-20">
-            <RevealPhoto src={img(SCENES[b.slug].cta, 1900, 1000)} alt="" className="!absolute inset-0" />
+            <RevealPhoto src={img(SCENES[b.slug].cta, ...SZ.wide)} alt="" className="!absolute inset-0" />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/20" />
             <div aria-hidden className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-primary/40 blur-[100px]" />
             <img src={b.logo} alt="" className="relative h-16 w-16 rounded-full object-cover ring-2 ring-white/30" />
@@ -464,7 +464,7 @@ export function Cart() {
                       const it = b.cats.flatMap((c) => c.items).find((i) => i.n === n)!;
                       return (
                         <motion.li layout key={n} className="card flex items-center gap-3 p-3">
-                          <img src={photoFor(it.n, it.t, 140, 140)} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
+                          <img src={photoFor(it.n, it.t, ...SZ.thumb)} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
                           <div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{n}</p><p className="text-xs text-muted">{rs(price(n))}</p></div>
                           <div className="flex items-center gap-2">
                             <button onClick={() => add(n, -1)} className="grid h-7 w-7 place-items-center rounded-full border border-line" aria-label="Less"><Minus className="h-3 w-3" /></button>

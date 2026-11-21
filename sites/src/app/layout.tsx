@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { Inter, Playfair_Display, Bebas_Neue, Cormorant_Garamond } from "next/font/google";
 import { brandFromHost } from "@/brands";
 import { ch } from "@/lib/hex";
+import { heroSet, img, SCENES, SZ } from "@/lib/photos";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
@@ -38,6 +39,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${bebas.variable} ${cormorant.variable}`} data-brand={b.slug}>
       <head>
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="preload" as="image" href={img(SCENES[b.slug].hero[0], SZ.hero[0])} imageSrcSet={heroSet(SCENES[b.slug].hero[0])} imageSizes="100vw" fetchPriority="high" />
         <style dangerouslySetInnerHTML={{ __html: `:root{${vars}--font-display:${display};}` }} />
       </head>
       <body>{children}</body>
