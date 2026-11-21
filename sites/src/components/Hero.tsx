@@ -104,7 +104,7 @@ function Visual() {
       {b.scene === "coffee" ? <CoffeeScene /> : <PhotoCard neon={b.scene === "neon"} />}
       {b.scene === "neon" && (
         <motion.img src={b.logo} alt="" initial={{ scale: 0, rotate: -30 }} animate={{ scale: 1, rotate: 0 }} transition={{ delay: 1.4, type: "spring", stiffness: 120 }}
-          className="flicker absolute -top-2 left-1/2 z-20 h-24 w-24 -translate-x-1/2 rounded-full object-cover shadow-[0_0_30px_rgb(var(--c-primary)),0_0_70px_rgb(var(--c-secondary)/0.6)]" />
+          className="flicker absolute -top-4 left-4 z-20 h-24 w-24 rounded-full object-cover shadow-[0_0_30px_rgb(var(--c-primary)),0_0_70px_rgb(var(--c-secondary)/0.6)]" />
       )}
       <Chip className="right-0 top-6 sm:-right-4" delay={1.6} from={30}>
         <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-gradient font-display text-lg text-ink">{b.rating}</span>

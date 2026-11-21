@@ -17,7 +17,7 @@ export const miami: Brand = {
   hero: {
     eyebrow: "Gaming lounge & cafe · DHA Phase 5, Karachi",
     start: "Pakistan's first",
-    rotating: ["PS5 + Sheesha", "gaming lounge", "VIP lounge", "late-night spot"],
+    rotating: ["PS5 + Sheesha", "gaming + sheesha", "neon lounge"],
     end: "experience. No place like Miami Nights.",
     sub: "Premium gaming, dining and sheesha under neon lights, with Vice City vibes, private rooms and a VIP lounge. Open every night from 6 PM till 6 AM in Tauheed Commercial, DHA Phase 5.",
   },
