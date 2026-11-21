@@ -7,7 +7,8 @@ import { cn, initials } from "@/lib/utils";
 import { Marquee } from "./Marquee";
 import { Counter } from "./Counter";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
-import { Art } from "./Art";
+import { img, photoFor, SCENES } from "@/lib/photos";
+import { RevealPhoto } from "./Showcase";
 import { useSite } from "./Providers";
 import { Btn, Heading, Stars, TiltCard, ease, useOpen, waLink } from "./ui";
 
@@ -16,11 +17,15 @@ export function Strip() {
   return (
     <section aria-label="Signature items" className="relative border-y border-line/60 bg-surface/50 py-6">
       <Marquee duration={38}>
-        {b.marquee.map((m) => (
-          <span key={m} className="mx-6 flex items-center gap-6 font-display text-2xl text-foreground/80 sm:text-3xl">
-            {m}<Sparkles className="h-5 w-5 text-primary" />
-          </span>
-        ))}
+        {b.marquee.map((m) => {
+          const it = b.cats.flatMap((c) => c.items).find((i) => i.n === m || m.includes(i.n) || i.n.includes(m));
+          return (
+            <span key={m} className="mx-5 flex items-center gap-5 font-display text-2xl text-foreground/85 sm:text-4xl">
+              {it && <img src={photoFor(it.n, it.t, 160, 160)} alt="" className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/50 sm:h-14 sm:w-14" />}
+              {m}<Sparkles className="h-5 w-5 text-primary" />
+            </span>
+          );
+        })}
       </Marquee>
       <Marquee duration={46} reverse className="mt-3">
         {b.services.concat([b.hours.text, b.areaLine, `${b.rating}★ on Google`]).map((m) => (
@@ -37,20 +42,23 @@ export function About() {
   return (
     <section id="about" className="section">
       <div className="container-x grid items-center gap-14 lg:grid-cols-2">
-        <Reveal dir="right" className="relative">
-          <div className="relative mx-auto grid max-w-lg grid-cols-2 gap-4">
-            <motion.img whileHover={{ scale: 1.03, rotate: -1 }} src={ph[0]} alt={b.name} className="col-span-1 row-span-2 h-full w-full rounded-3xl object-cover shadow-2xl" />
-            <motion.img whileHover={{ scale: 1.03, rotate: 1 }} src={ph[1] || ph[0]} alt={b.name} className="aspect-square w-full rounded-3xl object-cover shadow-2xl" />
-            <div className="card grid aspect-square place-items-center p-4 text-center">
+        <div className="relative">
+          <div className="relative mx-auto grid max-w-xl grid-cols-6 grid-rows-6 gap-4" style={{ aspectRatio: "1 / 1.05" }}>
+            <RevealPhoto src={img(SCENES[b.slug].story[0], 1000, 1300)} alt={b.name} from="left" className="col-span-4 row-span-6 rounded-[2rem]" />
+            <RevealPhoto src={img(SCENES[b.slug].story[1], 700, 700)} alt={b.name} from="right" className="col-span-2 row-span-3 rounded-[1.5rem]" />
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.5, duration: 0.8, ease }}
+              className="card col-span-2 row-span-3 grid place-items-center p-3 text-center">
               <div>
                 <p className="font-display text-5xl text-gradient">{b.rating}</p>
-                <Stars value={b.rating} className="mt-2 justify-center" />
+                <Stars value={b.rating} className="mt-2 justify-center [&_svg]:h-3.5 [&_svg]:w-3.5" />
                 <p className="mt-2 text-xs text-muted">{b.reviewsCount} Google reviews</p>
               </div>
-            </div>
+            </motion.div>
           </div>
+          <motion.img initial={{ opacity: 0, y: 30, rotate: -8 }} whileInView={{ opacity: 1, y: 0, rotate: -6 }} viewport={{ once: true }} transition={{ delay: 0.7, duration: 0.9, ease }}
+            src={ph[0]} alt={`${b.name}, from Instagram`} className="absolute -bottom-6 -left-2 h-28 w-28 rounded-2xl border-4 border-background object-cover shadow-2xl sm:h-36 sm:w-36" />
           <div aria-hidden className="absolute -bottom-6 -right-2 -z-10 h-40 w-40 rounded-full bg-primary/30 blur-3xl" />
-        </Reveal>
+        </div>
         <div>
           <Heading center={false} eyebrow={`About ${b.short}`} title={b.about.title} sub={b.about.body} />
           <Stagger className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -74,17 +82,16 @@ function ItemCard({ it, big }: { it: import("@/brands/types").Item; big?: boolea
   const { b, cart, add } = useSite();
   const q = cart[it.n] || 0;
   return (
-    <TiltCard className="overflow-hidden">
-      <div className={cn("relative grid place-items-center bg-[radial-gradient(circle_at_50%_60%,var(--g),transparent_70%)]", big ? "h-64" : "h-44")} style={{ ["--g" as string]: it.c + "66" }}>
+    <TiltCard className="overflow-hidden" max={5}>
+      <div className={cn("relative overflow-hidden rounded-t-[inherit]", big ? "h-72" : "h-52")}>
+        <img src={photoFor(it.n, it.t, big ? 900 : 640, big ? 720 : 520)} alt={it.n} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-[1.1s] ease-out group-hover:scale-110" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/10" />
         {it.tag && <span className="absolute left-4 top-4 rounded-full bg-brand-gradient px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-ink">{it.tag}</span>}
-        <motion.div whileHover={{ scale: 1.12, rotate: -4 }} transition={{ type: "spring", stiffness: 260, damping: 14 }} className="animate-float-slow">
-          <Art t={it.t} c={it.c} logo={b.cupLogo} className={big ? "h-48 w-48" : "h-32 w-32"} />
-        </motion.div>
+        <span className="absolute bottom-3 right-3 rounded-full bg-black/60 px-3 py-1 font-display text-base text-white backdrop-blur">{rs(it.p)}</span>
       </div>
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
           <h3 className={cn("font-sans font-bold leading-snug", big ? "text-xl" : "text-base")}>{it.n}</h3>
-          <span className="whitespace-nowrap font-display text-lg text-primary">{rs(it.p)}</span>
         </div>
         <p className="mt-1.5 min-h-[2.5rem] text-sm text-muted">{it.d}</p>
         <div className="mt-4 flex items-center justify-between">
@@ -135,6 +142,7 @@ export function MenuSection() {
     <section id="menu" className="section">
       <div className="container-x">
         <Heading eyebrow="Full menu" title={<>Our <span className="text-gradient">menu</span></>} sub={b.menuNote} />
+        <p className="mt-4 text-center text-xs text-muted/70">Photos are for illustration.</p>
         {b.sampleMenu && (
           <p className="mx-auto mt-6 max-w-xl rounded-2xl border border-accent/50 bg-accent/10 px-4 py-3 text-center text-sm text-accent">Sample items and prices shown for preview. The real menu goes here.</p>
         )}
@@ -184,8 +192,9 @@ export function Stats() {
   return (
     <section className="relative py-16">
       <div className="container-x">
-        <div className="card noise grid gap-8 overflow-hidden p-8 sm:grid-cols-2 sm:p-12 lg:grid-cols-4">
-          <div aria-hidden className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-primary/25 blur-3xl" />
+        <div className="noise relative grid gap-8 overflow-hidden rounded-[2rem] border border-line/70 p-8 sm:grid-cols-2 sm:p-14 lg:grid-cols-4">
+          <RevealPhoto src={img(SCENES[b.slug].stats, 1800, 900)} alt="" className="!absolute inset-0" />
+          <div aria-hidden className="absolute inset-0 bg-black/70" />
           {data.map(([v, suf, label, div]) => (
             <Reveal key={label} className="relative text-center">
               <p className="font-display text-5xl text-gradient sm:text-6xl">{div ? b.rating.toFixed(1) : <Counter value={v} suffix={suf} />}</p>
@@ -205,12 +214,12 @@ export function Gallery() {
   return (
     <section id="gallery" className="section bg-surface/40">
       <div className="container-x">
-        <Heading eyebrow="Gallery" title={<>A look <span className="text-gradient">inside</span></>} sub={b.instagram ? `Straight from @${b.instagram}.` : "Straight from our counter and our guests."} />
-        <div className={cn("mt-14 gap-4", many ? "columns-2 sm:columns-3 lg:columns-4 [&>*]:mb-4" : "grid sm:grid-cols-2")}>
+        <Heading eyebrow="Gallery" title={<>A look <span className="text-gradient">inside</span></>} sub={b.instagram ? `Real moments from @${b.instagram}.` : "Real moments from our counter and our guests."} />
+        <div className={cn("mx-auto mt-14 grid gap-3", many ? "grid-cols-3 sm:grid-cols-4 lg:grid-cols-6" : "max-w-xl grid-cols-2")}>
           {b.photos.map((p, i) => (
-            <Reveal key={p} dir="pop" delay={(i % 4) * 0.06} className="break-inside-avoid">
-              <button onClick={() => setOpen(i)} className="group relative block w-full overflow-hidden rounded-3xl" aria-label="Open photo">
-                <img src={p} alt={`${b.name} photo ${i + 1}`} loading="lazy" className={cn("w-full object-cover transition duration-700 group-hover:scale-110", !many && "aspect-[4/5]")} />
+            <Reveal key={p} dir="pop" delay={(i % 6) * 0.05}>
+              <button onClick={() => setOpen(i)} className="group relative block w-full overflow-hidden rounded-2xl" aria-label="Open photo">
+                <img src={p} alt={`${b.name} photo ${i + 1}`} loading="lazy" className="aspect-square w-full object-cover transition duration-700 group-hover:scale-110" />
                 <span className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
                 <span className="absolute bottom-4 left-4 translate-y-3 text-sm font-semibold text-white opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100">View</span>
               </button>
@@ -224,7 +233,7 @@ export function Gallery() {
       <AnimatePresence>
         {open !== null && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpen(null)} className="fixed inset-0 z-[80] grid place-items-center bg-black/90 p-6">
-            <motion.img key={open} initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} src={b.photos[open]} alt="" className="max-h-[85vh] max-w-full rounded-2xl" />
+            <motion.img key={open} initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} src={b.photos[open]} alt="" className="max-h-[85vh] w-[min(90vw,32rem)] rounded-2xl object-contain" />
             <button className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white" aria-label="Close"><X /></button>
           </motion.div>
         )}
@@ -369,13 +378,16 @@ export function Cta() {
     <section className="section">
       <div className="container-x">
         <Reveal dir="pop">
-          <div className="noise relative overflow-hidden rounded-[2.5rem] bg-brand-gradient p-10 text-ink sm:p-16 animate-gradient-pan">
-            <img src={b.logo} alt="" className="absolute -right-10 -top-10 h-64 w-64 rotate-12 rounded-full object-cover opacity-25 mix-blend-multiply animate-spin-slow" />
-            <h2 className="relative max-w-2xl text-[clamp(2.2rem,5vw,4rem)] leading-[1.02]">{b.cta.title}</h2>
-            <p className="relative mt-4 max-w-xl text-base font-medium text-ink/80 sm:text-lg">{b.cta.sub}</p>
+          <div className="noise relative overflow-hidden rounded-[2.5rem] border border-line/70 p-10 sm:p-16 lg:p-20">
+            <RevealPhoto src={img(SCENES[b.slug].cta, 1900, 1000)} alt="" className="!absolute inset-0" />
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/20" />
+            <div aria-hidden className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-primary/40 blur-[100px]" />
+            <img src={b.logo} alt="" className="relative h-16 w-16 rounded-full object-cover ring-2 ring-white/30" />
+            <h2 className="relative mt-6 max-w-2xl text-[clamp(2.2rem,5vw,4.2rem)] leading-[1.02] text-white">{b.cta.title}</h2>
+            <p className="relative mt-4 max-w-xl text-base font-medium text-white/75 sm:text-lg">{b.cta.sub}</p>
             <div className="relative mt-8 flex flex-wrap gap-3">
-              <a href="#menu" className="rounded-full bg-ink px-7 py-3.5 text-sm font-bold text-foreground transition hover:-translate-y-0.5">Start your order</a>
-              <a href={waLink(b.wa, `Hi ${b.short}!`)} target="_blank" rel="noopener noreferrer" className="rounded-full border-2 border-ink/70 px-7 py-3.5 text-sm font-bold transition hover:bg-ink/10">WhatsApp {b.phone}</a>
+              <a href="#menu" className="rounded-full bg-brand-gradient px-7 py-3.5 text-sm font-bold text-ink transition hover:-translate-y-0.5">Start your order</a>
+              <a href={waLink(b.wa, `Hi ${b.short}!`)} target="_blank" rel="noopener noreferrer" className="rounded-full border-2 border-white/40 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-white/10">WhatsApp {b.phone}</a>
             </div>
           </div>
         </Reveal>
@@ -407,7 +419,7 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <p className="container-x mt-12 text-xs text-muted">© {new Date().getFullYear()} {b.name}, Karachi.{b.sampleMenu ? " Menu and prices shown are samples." : " Prices may change."}</p>
+      <p className="container-x mt-12 text-xs text-muted">© {new Date().getFullYear()} {b.name}, Karachi.{b.sampleMenu ? " Menu and prices shown are samples." : " Prices may change."} Food photos are for illustration.</p>
     </footer>
   );
 }
@@ -452,7 +464,7 @@ export function Cart() {
                       const it = b.cats.flatMap((c) => c.items).find((i) => i.n === n)!;
                       return (
                         <motion.li layout key={n} className="card flex items-center gap-3 p-3">
-                          <Art t={it.t} c={it.c} logo={b.cupLogo} className="h-14 w-14 shrink-0" />
+                          <img src={photoFor(it.n, it.t, 140, 140)} alt="" className="h-14 w-14 shrink-0 rounded-xl object-cover" />
                           <div className="min-w-0 flex-1"><p className="truncate text-sm font-bold">{n}</p><p className="text-xs text-muted">{rs(price(n))}</p></div>
                           <div className="flex items-center gap-2">
                             <button onClick={() => add(n, -1)} className="grid h-7 w-7 place-items-center rounded-full border border-line" aria-label="Less"><Minus className="h-3 w-3" /></button>
