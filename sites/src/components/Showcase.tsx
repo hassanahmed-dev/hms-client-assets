@@ -15,8 +15,8 @@ export function RevealPhoto({ src, alt, className, from = "bottom" }: { src: str
   const y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
   const start = from === "left" ? "inset(0 100% 0 0)" : from === "right" ? "inset(0 0 0 100%)" : "inset(100% 0 0 0)";
   return (
-    <motion.div ref={ref} initial={{ clipPath: start }} whileInView={{ clipPath: "inset(0 0 0 0)" }} viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{ duration: 1.3, ease: [0.76, 0, 0.24, 1] }} className={`relative overflow-hidden ${className || ""}`}>
+    <motion.div ref={ref} initial={{ clipPath: start }} whileInView={{ clipPath: "inset(0 0 0 0)" }} viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }} className={`relative overflow-hidden ${className || ""}`}>
       <motion.img style={{ y }} src={src} alt={alt} loading="lazy" className="absolute inset-[-14%_0] h-[128%] w-full object-cover" />
     </motion.div>
   );
@@ -32,10 +32,13 @@ export function Story() {
       <div className="container-x">
         <div className="max-w-3xl">
           <motion.span initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="eyebrow"><span className="h-1.5 w-1.5 rounded-full bg-primary" />Signature picks</motion.span>
-          <h2 className="mt-5 text-[clamp(2.3rem,6vw,5rem)] leading-[1]">
-            <span className="block overflow-hidden"><motion.span className="block" initial={{ y: "105%" }} whileInView={{ y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}>The ones people</motion.span></span>
-            <span className="block overflow-hidden"><motion.span className="block text-gradient" initial={{ y: "105%" }} whileInView={{ y: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}>come back for.</motion.span></span>
-          </h2>
+          <motion.h2 initial="h" whileInView="v" viewport={{ once: true }} className="mt-5 text-[clamp(2.3rem,6vw,5rem)] leading-[1]">
+            {["The ones people", "come back for."].map((t, k) => (
+              <span key={t} className="block overflow-hidden pb-[0.06em]">
+                <motion.span className={`block ${k ? "text-gradient" : ""}`} variants={{ h: { y: "105%" }, v: { y: "0%" } }} transition={{ duration: 1, delay: k * 0.1, ease: [0.16, 1, 0.3, 1] }}>{t}</motion.span>
+              </span>
+            ))}
+          </motion.h2>
         </div>
         <div className="mt-16 space-y-20 sm:space-y-28">
           {sig.map((it, i) => {
@@ -78,9 +81,12 @@ export function TasteReel() {
   const track = useRef<HTMLDivElement>(null);
   const [dist, setDist] = useState(0);
   const all = b.cats.flatMap((c) => c.items);
+  // signature items first, then one from each category in turn; never the same photo twice
+  const order: Item[] = b.signature.map((n) => all.find((i) => i.n === n)).filter(Boolean) as Item[];
+  const longest = Math.max(...b.cats.map((c) => c.items.length));
+  for (let r = 0; r < longest; r++) for (const c of b.cats) if (c.items[r]) order.push(c.items[r]);
   const seen = new Set<string>();
-  // one item per photo, so the reel never repeats a picture
-  const reel = all.filter((it) => { const k = photoFor(it.n, it.t); if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 10);
+  const reel = order.filter((it) => { const k = photoFor(it.n, it.t); if (seen.has(k) || it.n === "Still Water") return false; seen.add(k); return true; }).slice(0, 10);
   useEffect(() => {
     const f = () => { if (track.current) setDist(Math.max(0, track.current.scrollWidth - window.innerWidth + 48)); };
     f(); window.addEventListener("resize", f); return () => window.removeEventListener("resize", f);

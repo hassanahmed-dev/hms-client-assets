@@ -66,9 +66,9 @@ export function Heading({ eyebrow, title, sub, center = true }: { eyebrow: strin
       <motion.span initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease }} className="eyebrow">
         <span className="h-1.5 w-1.5 rounded-full bg-primary" />{eyebrow}
       </motion.span>
-      <h2 className="mt-5 overflow-hidden pb-[0.08em] text-[clamp(2.1rem,5vw,3.8rem)] leading-[1.05]">
-        <motion.span className="block" initial={{ y: "105%", rotate: 2 }} whileInView={{ y: "0%", rotate: 0 }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}>{title}</motion.span>
-      </h2>
+      <motion.h2 initial="h" whileInView="v" viewport={{ once: true }} className="mt-5 overflow-hidden pb-[0.08em] text-[clamp(2.1rem,5vw,3.8rem)] leading-[1.05]">
+        <motion.span className="block" variants={{ h: { y: "105%", rotate: 2 }, v: { y: "0%", rotate: 0 } }} transition={{ duration: 1, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}>{title}</motion.span>
+      </motion.h2>
       {sub && <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.16, ease }}
         className={cn("mt-5 text-base leading-relaxed text-muted sm:text-lg", center && "mx-auto max-w-2xl")}>{sub}</motion.p>}
     </div>
