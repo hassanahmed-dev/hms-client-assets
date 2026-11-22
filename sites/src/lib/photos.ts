@@ -1,12 +1,23 @@
 /**
- * Representative food, drink and venue photography from Unsplash (free licence, hotlinked from
- * images.unsplash.com). These stand in until each cafe sends its own shoots.
+ * Representative food, drink and venue photography from Unsplash (free licence), passed through
+ * the site's own image optimiser. These stand in until each cafe sends its own shoots.
  */
-export const img = (id: string, w = 900, h?: number) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=60&w=${w}${h ? `&h=${h}` : ""}`;
+const raw = (id: string, w: number, h?: number, extra = "") =>
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}${h ? `&h=${h}` : ""}${extra}`;
+
+/** Served through this site's own image optimiser (same domain, cached at Vercel's edge). */
+const via = (src: string, w: number, q: number) => `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=${q}`;
+
+export const img = (id: string, w = 900, h?: number) => via(raw(id, w, h), w, 60);
 
 /** A ~1 KB blurred preview of the same photo, shown instantly while the real one loads. */
-export const tiny = (url: string) => (url.includes("images.unsplash.com") ? url.replace(/q=\d+&w=\d+(&h=\d+)?/, "q=30&w=40&blur=60") : "");
+export const tiny = (url: string) => {
+  const m = url.match(/photo-([0-9a-f]+-[0-9a-f]+)/);
+  if (!m) return "";
+  const hm = decodeURIComponent(url).match(/[?&]w=(\d+)&h=(\d+)/);
+  const h = hm ? Math.round((40 * Number(hm[2])) / Number(hm[1])) : undefined;
+  return via(raw(m[1], 40, h, "&blur=60"), 40, 30);
+};
 
 /** Inline style that paints the blurred preview behind an <img>. */
 export const lqip = (url: string) => {
