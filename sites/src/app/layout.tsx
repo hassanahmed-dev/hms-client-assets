@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: b.hero.sub,
     icons: { icon: b.logo },
     robots: { index: false, follow: false },
-    openGraph: { title: `${b.name} | ${b.tagline}`, description: b.hero.sub, images: [b.photos[0]] },
+    openGraph: { title: `${b.name} | ${b.tagline}`, description: b.hero.sub, images: b.photos[0] ? [b.photos[0]] : [] },
   };
 }
 

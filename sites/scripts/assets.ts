@@ -19,7 +19,7 @@ const ROOT = path.resolve(__dirname, "..");
 const PUB = path.join(ROOT, "public");
 const OUT = path.join(PUB, "stock");
 const GEN = path.join(ROOT, "src/lib/assets.generated.json");
-const SLUGS = ["vox", "barasti", "miami"] as const;
+const SLUGS = ["vox", "barasti", "miami", "marina", "ember", "delights"] as const;
 const EXT = /\.(jpe?g|png|webp|avif)$/i;
 
 const slugify = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -54,7 +54,7 @@ async function main() {
   const { plan, vkey, tkey } = await import("../src/lib/photos");
   const { brands } = await import("../src/brands");
 
-  const only = (() => { try { const env = process.env.NEXT_PUBLIC_BRAND || process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || ""; return SLUGS.find((s) => env.includes(s === "miami" ? "miami" : s)); } catch { return undefined; } })();
+  const only = (() => { try { const env = process.env.NEXT_PUBLIC_BRAND || process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || ""; return SLUGS.find((s) => env.includes(s)); } catch { return undefined; } })();
   const jobs = new Map<string, { id: string; w: number; h: number }>();
   for (const b of SLUGS.filter((s) => !only || s === only)) for (const [id, w, h] of plan(brands[b])) {
     jobs.set(vkey(id, w, h), { id, w, h });

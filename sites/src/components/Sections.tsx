@@ -7,7 +7,7 @@ import { cn, initials } from "@/lib/utils";
 import { Marquee } from "./Marquee";
 import { Counter } from "./Counter";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
-import { img, lqip, ownGallery, photoFor, SCENES, SZ } from "@/lib/photos";
+import { img, lqip, ownGallery, photoFor, reelItems, SCENES, SZ } from "@/lib/photos";
 import { RevealPhoto } from "./Showcase";
 import { useSite } from "./Providers";
 import { Btn, Heading, Stars, TiltCard, ease, useOpen, waLink } from "./ui";
@@ -55,8 +55,8 @@ export function About() {
               </div>
             </motion.div>
           </div>
-          <motion.img initial={{ opacity: 0, y: 30, rotate: -8 }} whileInView={{ opacity: 1, y: 0, rotate: -6 }} viewport={{ once: true }} transition={{ delay: 0.7, duration: 0.9, ease }}
-            src={ph[0]} alt={`${b.name}, from Instagram`} className="absolute -bottom-6 -left-2 h-28 w-28 rounded-2xl border-4 border-background object-cover shadow-2xl sm:h-36 sm:w-36" />
+          {ph[0] && <motion.img initial={{ opacity: 0, y: 30, rotate: -8 }} whileInView={{ opacity: 1, y: 0, rotate: -6 }} viewport={{ once: true }} transition={{ delay: 0.7, duration: 0.9, ease }}
+            src={ph[0]} alt={`${b.name}, from Instagram`} className="absolute -bottom-6 -left-2 h-28 w-28 rounded-2xl border-4 border-background object-cover shadow-2xl sm:h-36 sm:w-36" />}
           <div aria-hidden className="absolute -bottom-6 -right-2 -z-10 h-40 w-40 rounded-full bg-primary/30 blur-3xl" />
         </div>
         <div>
@@ -209,13 +209,15 @@ export function Stats() {
 
 export function Gallery() {
   const { b } = useSite();
-  const photos = [...b.photos, ...ownGallery(b.slug)];
+  const own = [...b.photos, ...ownGallery(b.slug)];
+  const sample = !own.length;
+  const photos = sample ? reelItems(b).slice(0, 6).map((it) => photoFor(it.n, it.t, ...SZ.card)) : own;
   const [open, setOpen] = useState<number | null>(null);
   const many = photos.length > 3;
   return (
     <section id="gallery" className="section bg-surface/40">
       <div className="container-x">
-        <Heading eyebrow="Gallery" title={<>A look <span className="text-gradient">inside</span></>} sub={b.instagram ? `Real moments from @${b.instagram}.` : "Real moments from our counter and our guests."} />
+        <Heading eyebrow="Gallery" title={<>A look <span className="text-gradient">inside</span></>} sub={sample ? "Sample photos for this preview. Your own photos of the cafe and food go here." : b.instagram ? `Real moments from @${b.instagram}.` : "Real moments from our counter and our guests."} />
         <div className={cn("mx-auto mt-14 grid gap-3", many ? "grid-cols-3 sm:grid-cols-4 lg:grid-cols-6" : "max-w-xl grid-cols-2")}>
           {photos.map((p, i) => (
             <Reveal key={p} dir="pop" delay={(i % 6) * 0.05}>
@@ -429,8 +431,8 @@ export function Cart() {
   const { b, cart, add, clear, count, total, open, setOpen, price } = useSite();
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
-  const [mode, setMode] = useState(b.slug === "miami" ? "Walk-in / booking" : "Pickup");
-  const modes = b.slug === "miami" ? ["Walk-in / booking", "Takeaway"] : b.slug === "barasti" ? ["Dine-in", "Pickup", "Delivery"] : ["Pickup", "Dine-in"];
+  const modes = b.orderModes || (b.slug === "miami" ? ["Walk-in / booking", "Takeaway"] : b.slug === "barasti" ? ["Dine-in", "Pickup", "Delivery"] : ["Pickup", "Dine-in"]);
+  const [mode, setMode] = useState(modes[0]);
   const send = () => {
     const lines = Object.entries(cart).map(([n, q]) => `• ${q} x ${n} = ${rs(q * price(n))}`).join("\n");
     const msg = `Hi ${b.short}! I'd like to place an order:\n\n${lines}\n\nTotal: ${rs(total)}\nType: ${mode}${name ? `\nName: ${name}` : ""}${note ? `\nNote: ${note}` : ""}`;

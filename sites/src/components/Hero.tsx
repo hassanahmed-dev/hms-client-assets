@@ -106,7 +106,7 @@ export function Hero() {
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/75 to-background/10" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-transparent to-background/60" />
       {b.slug === "miami" && <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_30%,rgb(var(--c-primary)/0.35),transparent_55%),radial-gradient(ellipse_at_20%_90%,rgb(var(--c-secondary)/0.3),transparent_50%)] mix-blend-screen" />}
-      {b.slug === "barasti" && <Embers />}
+      {b.scene === "grill" && <Embers />}
       <div aria-hidden className="noise absolute inset-0 -z-10" />
 
       <motion.div style={{ opacity: fade, y: txtY }} className="container-x relative grid w-full items-end gap-10 pb-24 pt-36 lg:grid-cols-12 lg:pb-28">

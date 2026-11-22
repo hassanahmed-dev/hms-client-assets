@@ -2,12 +2,17 @@ export type Art =
   | "hot" | "iced" | "frappe" | "tea" | "mocktail" | "shake" | "burger" | "sandwich" | "fries"
   | "curry" | "bbq" | "pasta" | "bread" | "salad" | "soup" | "seafood" | "chicken" | "sheesha" | "game";
 
+export type Slug = "vox" | "barasti" | "miami" | "marina" | "ember" | "delights";
+
 export type Item = { n: string; p: number; d: string; t: Art; c: string; tag?: string };
 export type Category = { name: string; items: Item[] };
 export type Review = { name: string; text: string; when: string };
 
 export type Brand = {
-  slug: "vox" | "barasti" | "miami";
+  slug: Slug;
+  /** true until the owner approves: shows a "sample design" badge and uses stock photos only */
+  demo?: boolean;
+  orderModes?: string[];
   name: string;
   short: string;
   tagline: string;
