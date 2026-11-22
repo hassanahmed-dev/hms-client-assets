@@ -1,5 +1,6 @@
 import type { Brand, Item } from "@/brands/types";
 import gen from "./assets.generated.json";
+import { brands } from "@/brands";
 
 /**
  * Photos for the sites. Two sources, both served as plain static files from this site's own
@@ -82,7 +83,7 @@ const P: Record<string, string[]> = {
   prawn: ["1559742811-822873691df8", "1723325697529-6e2679650b39", "1688084468401-4938b073aef2", "1514944288352-fffac99f0bdf"],
   fishchips: ["1579208030886-b937da0925dc", "1706711053549-f52f73a8960c", "1576777647209-e8733d7b851d"],
   wings: ["1567620832903-9fc6debc209f", "1608039755401-742074f0548d", "1650939986300-ce9609921fa7", "1767065703745-f3c33524605a"],
-  steak: ["1600891964092-4316c288032e", "1615937657715-bc7b4b7962c1", "1546964124-0cce460f38ef"],
+  steak: ["1600891964092-4316c288032e", "1615937657715-bc7b4b7962c1", "1546964124-0cce460f38ef", "1594041680534-e8c8cdebd659", "1602216475919-37336ceb4ad3", "1676300185292-e23bb3db50fa", "1740804989167-123b29d1a34b"],
   salad: ["1607532941433-304659e8198a", "1546793665-c74683f339c1", "1550304943-4f24f54ddde9"],
   fruit: ["1519996529931-28324d5a630e", "1641642400143-6be68f1a0918", "1641642399576-487909d0ddbc"],
   naan: ["1697155406014-04dc649b0953", "1640625314547-aee9a7696589", "1655979284091-eea0e93405ee"],
@@ -101,7 +102,8 @@ const P: Record<string, string[]> = {
   lasagna: ["1709429790175-b02bb1b19207", "1762631883229-95cfb6a063ad"],
   quesadilla: ["1618040996337-56904b7850b9", "1628838233717-be047a0b54fb", "1719957770167-bb66133ba808"],
   mozz: ["1734774924912-dcbb467f8599", "1778449665117-2c607bbc7415"],
-  grilled: ["1598515214211-89d3c73ae83b", "1532550907401-a500c9a57435", "1703219342277-1a78d6b4a27f"],
+  grilled: ["1598515214211-89d3c73ae83b", "1532550907401-a500c9a57435", "1703219342277-1a78d6b4a27f", "1432139555190-58524dae6a55", "1677051707481-d0d4447ccd6c", "1792974553104-83c9ff7991a2", "1670398564097-0762e1b30b3a", "1668838195568-6a336797587f", "1689774187968-0e6c29a1d82e"],
+  fajita: ["1666025954339-97a97468de17", "1546906067-0e3c85626d56", "1612888328032-d12cccaa61b7", "1520720303147-80e4538f2327"],
   fishfinger: ["1678969406337-1869bb0c0dc4", "1604331654916-540f76d082bd"],
   chai: ["1544787219-7f47ccb76574", "1619581073186-5b4ae1b0caad"],
   toast: ["1766981725120-4d39e6c9ad05", "1595044643502-616eeebbdff3", "1788462613181-3d3c2b62e710"],
@@ -114,6 +116,7 @@ const RULES: [RegExp, string][] = [
   [/roll|paratha|wrap/i, "wrap"],
   [/pizza fries|peri peri bites/i, "loaded"],
   [/pizza/i, "pizza"],
+  [/fajita|sizzling/i, "fajita"],
   [/chow ?mein/i, "chowmein"],
   [/manchurian|chilli dry|shashlik/i, "chinese"],
   [/pancake/i, "pancake"],
@@ -181,12 +184,36 @@ function hash(s: string) {
   return h;
 }
 
-/** A photo id for a menu item, picked by its name first, then by its type. */
+function poolKey(name: string, type: string) {
+  return RULES.find(([r]) => r.test(name))?.[1] || TYPE[type] || "hot";
+}
+
+/** Per brand, hand out each pool's photos in turn down the menu, so neighbouring cards never repeat a photo. */
+const ASSIGN: Partial<Record<Slug, Map<string, string>>> = {};
+function assigned(slug: Slug) {
+  let m = ASSIGN[slug];
+  if (!m) {
+    m = new Map();
+    const next: Record<string, number> = {};
+    for (const c of brands[slug].cats) for (const it of c.items) {
+      const key = poolKey(it.n, it.t);
+      const pool = P[key];
+      const i = (next[key] ??= hash(slug + key) % pool.length);
+      m.set(it.n, pool[i % pool.length]);
+      next[key] = i + 1;
+    }
+    ASSIGN[slug] = m;
+  }
+  return m;
+}
+
+/** A photo id for a menu item: the cafe's own photo if it sent one, otherwise stock picked by name, then type. */
 export function photoId(name: string, type: string) {
   const own = G.own[CUR]?.menu?.[slugify(name)];
   if (own) return own;
-  const key = RULES.find(([r]) => r.test(name))?.[1] || TYPE[type] || "hot";
-  const pool = P[key];
+  const a = assigned(CUR).get(name);
+  if (a) return a;
+  const pool = P[poolKey(name, type)];
   return pool[hash(name) % pool.length];
 }
 
