@@ -15,5 +15,15 @@ export function brandFromHost(host: string | null | undefined): Brand {
   return (env && brands[env]) || vox;
 }
 
+/**
+ * The brand this deployment serves, fixed at build time. Each Vercel project builds its own copy,
+ * so the page can be pre-rendered once and served from the CDN instead of rendered per request.
+ */
+export function buildBrand(): Brand {
+  const env = process.env.NEXT_PUBLIC_BRAND as keyof typeof brands | undefined;
+  if (env && brands[env]) return brands[env];
+  return brandFromHost(process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || process.env.VERCEL_GIT_REPO_SLUG);
+}
+
 export const rs = (n: number) => "Rs. " + Math.round(n).toLocaleString("en-US");
 export type { Brand };

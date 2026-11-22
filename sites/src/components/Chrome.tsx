@@ -15,14 +15,14 @@ export function Preloader() {
     try { if (sessionStorage.getItem(key)) { setShow(false); return; } } catch {}
     document.documentElement.style.overflow = "hidden";
     const touch = window.matchMedia("(pointer: coarse)").matches;
-    const total = touch ? 1200 : 1900;
+    const total = touch ? 650 : 900;
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / total);
       setPct(Math.round((1 - Math.pow(1 - t, 3)) * 100));
       if (t < 1) raf = requestAnimationFrame(tick);
-      else { try { sessionStorage.setItem(key, "1"); } catch {} setTimeout(() => setShow(false), 250); }
+      else { try { sessionStorage.setItem(key, "1"); } catch {} setTimeout(() => setShow(false), 80); }
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -33,7 +33,7 @@ export function Preloader() {
     <AnimatePresence>
       {show && (
         <motion.div role="status" aria-label={`Loading ${b.name}`} className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-background"
-          initial={{ clipPath: "inset(0 0 0% 0)" }} exit={{ clipPath: "inset(0 0 100% 0)" }} transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}>
+          initial={{ clipPath: "inset(0 0 0% 0)" }} exit={{ clipPath: "inset(0 0 100% 0)" }} transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}>
           <div aria-hidden className="absolute left-1/2 top-1/2 h-[60vmin] w-[60vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/25 blur-[100px]" />
           <motion.div initial={{ scale: 0.5, opacity: 0, rotate: -25 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ duration: 0.9, ease }} className="relative">
             <span aria-hidden className="absolute inset-[-16px] animate-spin-slow rounded-full border border-dashed border-primary/60" />

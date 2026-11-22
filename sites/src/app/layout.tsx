@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
 import "@fontsource-variable/inter/index.css";
 import "@fontsource/playfair-display/latin-600.css";
 import "@fontsource/playfair-display/latin-700.css";
@@ -8,16 +7,13 @@ import "@fontsource/bebas-neue/latin-400.css";
 import "@fontsource/cormorant-garamond/latin-500.css";
 import "@fontsource/cormorant-garamond/latin-600.css";
 import "@fontsource/cormorant-garamond/latin-700.css";
-import { brandFromHost } from "@/brands";
+import { buildBrand } from "@/brands";
 import { ch } from "@/lib/hex";
 import { heroIds, heroSet, img, SZ } from "@/lib/photos";
 import "./globals.css";
 
 
-async function brand() {
-  const h = await headers();
-  return brandFromHost(h.get("x-forwarded-host") || h.get("host"));
-}
+const brand = async () => buildBrand();
 
 export async function generateMetadata(): Promise<Metadata> {
   const b = await brand();
@@ -42,8 +38,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" data-brand={b.slug}>
       <head>
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="preload" as="image" href={img(heroIds(b.slug)[0], SZ.hero[0])} imageSrcSet={heroSet(heroIds(b.slug)[0])} imageSizes="100vw" fetchPriority="high" />
         <style dangerouslySetInnerHTML={{ __html: `:root{${vars}--font-display:${display};--font-body:'Inter Variable';}` }} />
       </head>

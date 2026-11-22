@@ -1,9 +1,8 @@
-import { headers } from "next/headers";
-import { brandFromHost } from "@/brands";
+import { buildBrand } from "@/brands";
 import { Site } from "@/components/Site";
 
-export default async function Page() {
-  const h = await headers();
-  const b = brandFromHost(h.get("x-forwarded-host") || h.get("host"));
-  return <Site slug={b.slug} />;
+export const dynamic = "force-static";
+
+export default function Page() {
+  return <Site slug={buildBrand().slug} />;
 }

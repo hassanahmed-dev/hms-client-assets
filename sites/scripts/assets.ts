@@ -54,8 +54,9 @@ async function main() {
   const { plan, vkey, tkey } = await import("../src/lib/photos");
   const { brands } = await import("../src/brands");
 
+  const only = (() => { try { const env = process.env.NEXT_PUBLIC_BRAND || process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || ""; return SLUGS.find((s) => env.includes(s === "miami" ? "miami" : s)); } catch { return undefined; } })();
   const jobs = new Map<string, { id: string; w: number; h: number }>();
-  for (const b of SLUGS) for (const [id, w, h] of plan(brands[b])) {
+  for (const b of SLUGS.filter((s) => !only || s === only)) for (const [id, w, h] of plan(brands[b])) {
     jobs.set(vkey(id, w, h), { id, w, h });
     jobs.set(tkey(id), { id, w: 48, h: 48 });
   }
