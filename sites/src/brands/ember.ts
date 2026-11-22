@@ -6,8 +6,8 @@ export const ember: Brand = {
   name: "Ember Lounge",
   short: "Ember",
   tagline: "A world of flavors for your evening indulgence",
-  logo: "/ember/logo.svg",
-  cupLogo: "/ember/logo.svg",
+  logo: "/ember/logo.jpg",
+  cupLogo: "/ember/logo.jpg",
   font: "bebas",
   theme: {
     background: "#0b0807", surface: "#120d0b", card: "#1a1210", line: "#3a2420",

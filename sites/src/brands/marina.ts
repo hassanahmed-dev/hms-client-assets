@@ -6,8 +6,8 @@ export const marina: Brand = {
   name: "Cafe Marina",
   short: "Marina",
   tagline: "Cafe & Restaurant, DHA Phase 5",
-  logo: "/marina/logo.svg",
-  cupLogo: "/marina/logo.svg",
+  logo: "/marina/logo.jpg",
+  cupLogo: "/marina/logo.jpg",
   font: "cormorant",
   theme: {
     background: "#140808", surface: "#1c0c0b", card: "#26100e", line: "#4a1e1a",

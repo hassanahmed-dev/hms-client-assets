@@ -6,8 +6,8 @@ export const delights: Brand = {
   name: "Cafe Delights",
   short: "Cafe Delights",
   tagline: "Food, coffee and late nights in Clifton",
-  logo: "/delights/logo.svg",
-  cupLogo: "/delights/logo.svg",
+  logo: "/delights/logo.jpg",
+  cupLogo: "/delights/logo.jpg",
   font: "playfair",
   theme: {
     background: "#0b0b09", surface: "#131310", card: "#1b1a15", line: "#3a3828",
