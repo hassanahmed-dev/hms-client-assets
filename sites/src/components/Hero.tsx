@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
 import { ArrowDown, MapPin, Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { rs } from "@/brands";
-import { heroSet, img, lqip, photoFor, SCENES, SZ } from "@/lib/photos";
+import { heroIds, heroSet, img, lqip, photoFor, SZ } from "@/lib/photos";
 import { useSite } from "./Providers";
 import { Btn, Stars, ease, useOpen } from "./ui";
 
@@ -82,7 +82,7 @@ function PickCard() {
 export function Hero() {
   const { b } = useSite();
   const ref = useRef<HTMLElement>(null);
-  const shots = SCENES[b.slug].hero;
+  const shots = heroIds(b.slug);
   const [s, setS] = useState(0);
   useEffect(() => { const t = setInterval(() => setS((p) => (p + 1) % shots.length), 6000); return () => clearInterval(t); }, [shots.length]);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });

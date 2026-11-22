@@ -10,7 +10,7 @@ import "@fontsource/cormorant-garamond/latin-600.css";
 import "@fontsource/cormorant-garamond/latin-700.css";
 import { brandFromHost } from "@/brands";
 import { ch } from "@/lib/hex";
-import { heroSet, img, SCENES, SZ } from "@/lib/photos";
+import { heroIds, heroSet, img, SZ } from "@/lib/photos";
 import "./globals.css";
 
 
@@ -44,7 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        <link rel="preload" as="image" href={img(SCENES[b.slug].hero[0], SZ.hero[0])} imageSrcSet={heroSet(SCENES[b.slug].hero[0])} imageSizes="100vw" fetchPriority="high" />
+        <link rel="preload" as="image" href={img(heroIds(b.slug)[0], SZ.hero[0])} imageSrcSet={heroSet(heroIds(b.slug)[0])} imageSizes="100vw" fetchPriority="high" />
         <style dangerouslySetInnerHTML={{ __html: `:root{${vars}--font-display:${display};--font-body:'Inter Variable';}` }} />
       </head>
       <body>{children}</body>

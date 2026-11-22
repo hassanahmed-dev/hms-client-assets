@@ -7,7 +7,7 @@ import { cn, initials } from "@/lib/utils";
 import { Marquee } from "./Marquee";
 import { Counter } from "./Counter";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
-import { img, lqip, photoFor, SCENES, SZ } from "@/lib/photos";
+import { img, lqip, ownGallery, photoFor, SCENES, SZ } from "@/lib/photos";
 import { RevealPhoto } from "./Showcase";
 import { useSite } from "./Providers";
 import { Btn, Heading, Stars, TiltCard, ease, useOpen, waLink } from "./ui";
@@ -209,14 +209,15 @@ export function Stats() {
 
 export function Gallery() {
   const { b } = useSite();
+  const photos = [...b.photos, ...ownGallery(b.slug)];
   const [open, setOpen] = useState<number | null>(null);
-  const many = b.photos.length > 3;
+  const many = photos.length > 3;
   return (
     <section id="gallery" className="section bg-surface/40">
       <div className="container-x">
         <Heading eyebrow="Gallery" title={<>A look <span className="text-gradient">inside</span></>} sub={b.instagram ? `Real moments from @${b.instagram}.` : "Real moments from our counter and our guests."} />
         <div className={cn("mx-auto mt-14 grid gap-3", many ? "grid-cols-3 sm:grid-cols-4 lg:grid-cols-6" : "max-w-xl grid-cols-2")}>
-          {b.photos.map((p, i) => (
+          {photos.map((p, i) => (
             <Reveal key={p} dir="pop" delay={(i % 6) * 0.05}>
               <button onClick={() => setOpen(i)} className="group relative block w-full overflow-hidden rounded-2xl" aria-label="Open photo">
                 <img src={p} alt={`${b.name} photo ${i + 1}`} loading="lazy" className="aspect-square w-full object-cover transition duration-700 group-hover:scale-110" />
@@ -233,7 +234,7 @@ export function Gallery() {
       <AnimatePresence>
         {open !== null && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpen(null)} className="fixed inset-0 z-[80] grid place-items-center bg-black/90 p-6">
-            <motion.img key={open} initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} src={b.photos[open]} alt="" className="max-h-[85vh] w-[min(90vw,32rem)] rounded-2xl object-contain" />
+            <motion.img key={open} initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} src={photos[open]} alt="" className="max-h-[85vh] w-[min(90vw,32rem)] rounded-2xl object-contain" />
             <button className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white" aria-label="Close"><X /></button>
           </motion.div>
         )}

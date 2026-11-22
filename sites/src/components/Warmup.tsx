@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { heroSet, img, photoFor, SCENES, SZ } from "@/lib/photos";
+import { heroIds, heroSet, img, photoFor, reelItems, SCENES, SZ } from "@/lib/photos";
 import { useSite } from "./Providers";
 
 type Job = { src: string; srcset?: string };
@@ -24,14 +24,14 @@ export function Warmup() {
     const push = (src: string, srcset?: string) => { if (!seen.has(src)) { seen.add(src); q.push({ src, srcset }); } };
 
     // first screen
-    sc.hero.slice(1).forEach((id) => push(img(id, SZ.hero[0]), heroSet(id)));
+    heroIds(b.slug).slice(1).forEach((id) => push(img(id, SZ.hero[0]), heroSet(id)));
     sig.forEach((it) => push(photoFor(it.n, it.t, ...SZ.pick)));
     marquee.forEach((it) => push(photoFor(it.n, it.t, ...SZ.thumb)));
     if (!slow) {
       // next screens, in page order
       push(img(sc.story[0], 900, 1150)); push(img(sc.story[1], 600, 600));
       sig.forEach((it) => push(photoFor(it.n, it.t, ...SZ.story)));
-      all.slice(0, 12).forEach((it) => push(photoFor(it.n, it.t, ...SZ.reel)));
+      reelItems(b).forEach((it) => push(photoFor(it.n, it.t, ...SZ.reel)));
       b.cats.forEach((c) => c.items.slice(0, 4).forEach((it) => push(photoFor(it.n, it.t, ...SZ.card))));
       all.forEach((it) => push(photoFor(it.n, it.t, ...SZ.card)));
       push(img(sc.stats, ...SZ.wide)); push(img(sc.cta, ...SZ.wide));

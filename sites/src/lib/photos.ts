@@ -1,22 +1,40 @@
+import type { Brand, Item } from "@/brands/types";
+import gen from "./assets.generated.json";
+
 /**
- * Representative food, drink and venue photography from Unsplash (free licence), passed through
- * the site's own image optimiser. These stand in until each cafe sends its own shoots.
+ * Photos for the sites. Two sources, both served as plain static files from this site's own
+ * domain (Vercel CDN):
+ *  1. The cafe's own photos, dropped into public/<brand>/hero, /menu or /gallery. The build
+ *     (scripts/assets.ts) resizes them to WebP automatically and they take priority.
+ *  2. Representative Unsplash stock (free licence), downloaded by the build into public/stock.
+ * If a file is missing for any reason, the URL falls back to Vercel's image optimiser.
  */
+type Slug = Brand["slug"];
+type Gen = { stock: Record<string, 1>; own: Partial<Record<Slug, { hero?: string[]; menu?: Record<string, string>; gallery?: string[] }>> };
+const G = gen as Gen;
+
 const raw = (id: string, w: number, h?: number, extra = "") =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}${h ? `&h=${h}` : ""}${extra}`;
-
-/** Served through this site's own image optimiser (same domain, cached at Vercel's edge). */
 const via = (src: string, w: number, q: number) => `/_next/image?url=${encodeURIComponent(src)}&w=${w}&q=${q}`;
 
-export const img = (id: string, w = 900, h?: number) => via(raw(id, w, h), w, 60);
+export const vkey = (id: string, w: number, h?: number) => `${id}_${w}x${h || 0}`;
+export const tkey = (id: string) => `${id}_t`;
+
+/** remembers which photo each URL belongs to, so lqip() can find its blurred preview */
+const ID_OF = new Map<string, string>();
+
+export const img = (id: string, w = 900, h?: number) => {
+  const k = vkey(id, w, h);
+  const url = G.stock[k] ? `/stock/${k}.webp` : via(raw(id, w, h), w, 60);
+  ID_OF.set(url, id);
+  return url;
+};
 
 /** A ~1 KB blurred preview of the same photo, shown instantly while the real one loads. */
 export const tiny = (url: string) => {
-  const m = url.match(/photo-([0-9a-f]+-[0-9a-f]+)/);
-  if (!m) return "";
-  const hm = decodeURIComponent(url).match(/[?&]w=(\d+)&h=(\d+)/);
-  const h = hm ? Math.round((40 * Number(hm[2])) / Number(hm[1])) : undefined;
-  return via(raw(m[1], 40, h, "&blur=60"), 40, 30);
+  const id = ID_OF.get(url);
+  if (!id) return "";
+  return G.stock[tkey(id)] ? `/stock/${tkey(id)}.webp` : id.startsWith("own-") ? "" : via(raw(id, 40, 40, "&blur=60"), 40, 30);
 };
 
 /** Inline style that paints the blurred preview behind an <img>. */
@@ -24,6 +42,13 @@ export const lqip = (url: string) => {
   const t = tiny(url);
   return t ? { backgroundImage: `url("${t}")`, backgroundSize: "cover", backgroundPosition: "center" } : undefined;
 };
+
+/** Each Vercel project serves one cafe; Providers tells us which one. */
+let CUR: Slug = "vox";
+export const setBrand = (s: Slug) => { CUR = s; };
+
+/** "Malai Boti" -> "malai-boti", the file name an owner uses in public/<brand>/menu/ */
+export const slugify = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 /** Fixed sizes, so every place that shows a photo shares one cached file. */
 export const SZ = {
@@ -118,6 +143,8 @@ function hash(s: string) {
 
 /** A photo id for a menu item, picked by its name first, then by its type. */
 export function photoId(name: string, type: string) {
+  const own = G.own[CUR]?.menu?.[slugify(name)];
+  if (own) return own;
   const key = RULES.find(([r]) => r.test(name))?.[1] || TYPE[type] || "hot";
   const pool = P[key];
   return pool[hash(name) % pool.length];
@@ -146,3 +173,34 @@ export const SCENES: Record<"vox" | "barasti" | "miami", { hero: string[]; story
     stats: "1785765904806-0d687601b0d5",
   },
 };
+
+/** Hero slides: the cafe's own hero photos if it has sent any, otherwise the stock set. */
+export const heroIds = (slug: Slug) => (G.own[slug]?.hero?.length ? G.own[slug]!.hero! : SCENES[slug].hero);
+/** Extra gallery photos the cafe dropped into public/<brand>/gallery. */
+export const ownGallery = (slug: Slug) => (G.own[slug]?.gallery || []).map((id) => img(id, 1200));
+
+/** The dish reel: signature items first, then one from each category in turn, no repeated photo. */
+export function reelItems(b: Brand): Item[] {
+  const all = b.cats.flatMap((c) => c.items);
+  const order: Item[] = b.signature.map((n) => all.find((i) => i.n === n)).filter(Boolean) as Item[];
+  const longest = Math.max(...b.cats.map((c) => c.items.length));
+  for (let r = 0; r < longest; r++) for (const c of b.cats) if (c.items[r]) order.push(c.items[r]);
+  const seen = new Set<string>();
+  return order.filter((it) => { const k = photoId(it.n, it.t); if (seen.has(k) || it.n === "Still Water") return false; seen.add(k); return true; }).slice(0, 10);
+}
+
+/** Every [photo id, width, height] a brand's page shows, for the build to prepare. */
+export function plan(b: Brand): [string, number, number][] {
+  setBrand(b.slug);
+  const out: [string, number, number][] = [];
+  const add = (id: string, s: readonly [number, number]) => out.push([id, s[0], s[1]]);
+  const all = b.cats.flatMap((c) => c.items);
+  const sig = b.signature.map((n) => all.find((i) => i.n === n)).filter(Boolean) as Item[];
+  all.forEach((it) => { add(photoId(it.n, it.t), SZ.card); add(photoId(it.n, it.t), SZ.thumb); });
+  reelItems(b).forEach((it) => add(photoId(it.n, it.t), SZ.reel));
+  sig.forEach((it) => { add(photoId(it.n, it.t), SZ.story); add(photoId(it.n, it.t), SZ.pick); });
+  const sc = SCENES[b.slug];
+  heroIds(b.slug).forEach((id) => { add(id, SZ.hero); add(id, SZ.heroSm); });
+  add(sc.story[0], [900, 1150]); add(sc.story[1], [600, 600]); add(sc.stats, SZ.wide); add(sc.cta, SZ.wide);
+  return out;
+}

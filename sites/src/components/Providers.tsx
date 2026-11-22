@@ -3,6 +3,7 @@ import Lenis from "lenis";
 import { MotionConfig } from "framer-motion";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { brands, type Brand } from "@/brands";
+import { setBrand } from "@/lib/photos";
 
 type Cart = Record<string, number>;
 type Ctx = {
@@ -31,6 +32,7 @@ export function scrollToId(id: string) {
 
 export function Providers({ slug, children }: { slug: keyof typeof brands; children: ReactNode }) {
   const b = brands[slug];
+  setBrand(slug);
   const prices = useMemo(() => {
     const m: Record<string, number> = {};
     b.cats.forEach((c) => c.items.forEach((i) => (m[i.n] = i.p)));

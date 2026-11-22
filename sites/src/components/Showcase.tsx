@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { rs } from "@/brands";
 import type { Item } from "@/brands/types";
-import { lqip, photoFor, SZ } from "@/lib/photos";
+import { lqip, photoFor, reelItems, SZ } from "@/lib/photos";
 import { useSite } from "./Providers";
 import { ease } from "./ui";
 
@@ -80,13 +80,7 @@ export function TasteReel() {
   const ref = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const [dist, setDist] = useState(0);
-  const all = b.cats.flatMap((c) => c.items);
-  // signature items first, then one from each category in turn; never the same photo twice
-  const order: Item[] = b.signature.map((n) => all.find((i) => i.n === n)).filter(Boolean) as Item[];
-  const longest = Math.max(...b.cats.map((c) => c.items.length));
-  for (let r = 0; r < longest; r++) for (const c of b.cats) if (c.items[r]) order.push(c.items[r]);
-  const seen = new Set<string>();
-  const reel = order.filter((it) => { const k = photoFor(it.n, it.t); if (seen.has(k) || it.n === "Still Water") return false; seen.add(k); return true; }).slice(0, 10);
+  const reel = reelItems(b);
   useEffect(() => {
     const f = () => { if (track.current) setDist(Math.max(0, track.current.scrollWidth - window.innerWidth + 48)); };
     f(); window.addEventListener("resize", f); return () => window.removeEventListener("resize", f);
