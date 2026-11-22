@@ -1,15 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
-import { Inter, Playfair_Display, Bebas_Neue, Cormorant_Garamond } from "next/font/google";
+import "@fontsource-variable/inter/index.css";
+import "@fontsource/playfair-display/latin-600.css";
+import "@fontsource/playfair-display/latin-700.css";
+import "@fontsource/playfair-display/latin-800.css";
+import "@fontsource/bebas-neue/latin-400.css";
+import "@fontsource/cormorant-garamond/latin-500.css";
+import "@fontsource/cormorant-garamond/latin-600.css";
+import "@fontsource/cormorant-garamond/latin-700.css";
 import { brandFromHost } from "@/brands";
 import { ch } from "@/lib/hex";
 import { heroSet, img, SCENES, SZ } from "@/lib/photos";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
-const playfair = Playfair_Display({ subsets: ["latin"], weight: ["600", "700", "800", "900"], variable: "--f-playfair", display: "swap" });
-const bebas = Bebas_Neue({ subsets: ["latin"], weight: "400", variable: "--f-bebas", display: "swap" });
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--f-cormorant", display: "swap" });
 
 async function brand() {
   const h = await headers();
@@ -35,14 +38,14 @@ export async function generateViewport(): Promise<Viewport> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const b = await brand();
   const vars = Object.entries(b.theme).map(([k, v]) => `--c-${k}:${ch(v)};`).join("");
-  const display = b.font === "bebas" ? "var(--f-bebas)" : b.font === "cormorant" ? "var(--f-cormorant)" : "var(--f-playfair)";
+  const display = b.font === "bebas" ? "'Bebas Neue'" : b.font === "cormorant" ? "'Cormorant Garamond'" : "'Playfair Display'";
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} ${bebas.variable} ${cormorant.variable}`} data-brand={b.slug}>
+    <html lang="en" data-brand={b.slug}>
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="preload" as="image" href={img(SCENES[b.slug].hero[0], SZ.hero[0])} imageSrcSet={heroSet(SCENES[b.slug].hero[0])} imageSizes="100vw" fetchPriority="high" />
-        <style dangerouslySetInnerHTML={{ __html: `:root{${vars}--font-display:${display};}` }} />
+        <style dangerouslySetInnerHTML={{ __html: `:root{${vars}--font-display:${display};--font-body:'Inter Variable';}` }} />
       </head>
       <body>{children}</body>
     </html>
