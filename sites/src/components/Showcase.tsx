@@ -8,15 +8,17 @@ import { lqip, photoFor, reelItems, SZ } from "@/lib/photos";
 import { useSite } from "./Providers";
 import { ease } from "./ui";
 
-/** Photo that wipes in with a clip-path as it enters, then drifts with scroll. */
+/** Photo that wipes in with a clip-path as it scrolls into view, then drifts with scroll.
+ *  Driven by scroll position (not an in-view event), so it always opens, even on fast scrolls. */
 export function RevealPhoto({ src, alt, className, from = "bottom" }: { src: string; alt: string; className?: string; from?: "bottom" | "left" | "right" }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
-  const start = from === "left" ? "inset(0 100% 0 0)" : from === "right" ? "inset(0 0 0 100%)" : "inset(100% 0 0 0)";
+  const open = useTransform(scrollYProgress, [0.02, 0.3], [100, 0], { clamp: true });
+  const clipPath = useTransform(open, (v) =>
+    from === "left" ? `inset(0 ${v}% 0 0 round 0)` : from === "right" ? `inset(0 0 0 ${v}% round 0)` : `inset(${v}% 0 0 0 round 0)`);
   return (
-    <motion.div ref={ref} initial={{ clipPath: start }} whileInView={{ clipPath: "inset(0 0 0 0)" }} viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 1.1, ease: [0.76, 0, 0.24, 1] }} className={`relative overflow-hidden ${className || ""}`}>
+    <motion.div ref={ref} style={{ clipPath }} className={`relative overflow-hidden ${className || ""}`}>
       <motion.img style={{ y, ...lqip(src) }} src={src} alt={alt} loading="lazy" decoding="async" className="absolute inset-[-14%_0] h-[128%] w-full object-cover" />
     </motion.div>
   );
