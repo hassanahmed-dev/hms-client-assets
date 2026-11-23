@@ -17,12 +17,24 @@ const brand = async () => buildBrand();
 
 export async function generateMetadata(): Promise<Metadata> {
   const b = await brand();
+  const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  const title = `${b.name} | ${b.tagline}`;
+  // A logo card for link previews (WhatsApp, Instagram DMs), unless the cafe has its own photo.
+  const share = b.photos[0] || `/${b.slug}/og.jpg`;
   return {
-    title: `${b.name} | ${b.tagline}`,
+    metadataBase: host ? new URL(`https://${host}`) : undefined,
+    title,
     description: b.hero.sub,
-    icons: { icon: b.logo },
+    icons: {
+      icon: [
+        { url: `/${b.slug}/favicon-32.png`, sizes: "32x32", type: "image/png" },
+        { url: `/${b.slug}/icon-192.png`, sizes: "192x192", type: "image/png" },
+      ],
+      apple: { url: `/${b.slug}/apple-touch-icon.png`, sizes: "180x180" },
+    },
     robots: { index: false, follow: false },
-    openGraph: { title: `${b.name} | ${b.tagline}`, description: b.hero.sub, images: b.photos[0] ? [b.photos[0]] : [] },
+    openGraph: { title, description: b.hero.sub, siteName: b.name, type: "website", images: [b.photos[0] ? { url: share, alt: b.name } : { url: share, width: 1200, height: 630, alt: b.name }] },
+    twitter: { card: "summary_large_image", title, description: b.hero.sub, images: [share] },
   };
 }
 

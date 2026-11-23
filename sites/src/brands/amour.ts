@@ -6,8 +6,8 @@ export const amour: Brand = {
   name: "Amour Live Bakery & Cafe",
   short: "Amour",
   tagline: "Live Bakery & Cafe, Clifton",
-  logo: "/amour/logo.svg",
-  cupLogo: "/amour/logo.svg",
+  logo: "/amour/logo.jpg",
+  cupLogo: "/amour/logo.jpg",
   font: "playfair",
   theme: {
     background: "#150d0b", surface: "#1d1310", card: "#261a16", line: "#4a3530",

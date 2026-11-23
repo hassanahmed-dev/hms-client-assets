@@ -6,8 +6,8 @@ export const lafuma: Brand = {
   name: "La Fuma Café",
   short: "La Fuma",
   tagline: "Cafe & Restaurant, Tauheed Commercial, DHA Phase 5",
-  logo: "/lafuma/logo.svg",
-  cupLogo: "/lafuma/logo.svg",
+  logo: "/lafuma/logo.jpg",
+  cupLogo: "/lafuma/logo.jpg",
   font: "cormorant",
   theme: {
     background: "#0a0908", surface: "#12100c", card: "#1a1711", line: "#3a3222",

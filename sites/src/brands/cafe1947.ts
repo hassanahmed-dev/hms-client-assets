@@ -6,8 +6,8 @@ export const cafe1947: Brand = {
   name: "Café 1947 by S&R",
   short: "Café 1947",
   tagline: "Artisanal Pan-Eastern Cuisine, DHA Phase 5",
-  logo: "/cafe1947/logo.svg",
-  cupLogo: "/cafe1947/logo.svg",
+  logo: "/cafe1947/logo.jpg",
+  cupLogo: "/cafe1947/logo.jpg",
   font: "playfair",
   theme: {
     background: "#120c08", surface: "#1a120c", card: "#231810", line: "#47321f",
