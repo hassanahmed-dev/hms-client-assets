@@ -19,7 +19,7 @@ export const cafe1947: Brand = {
   hero: {
     eyebrow: "Family-run · Badar Commercial, DHA Phase 5",
     start: "Where flavour",
-    rotating: ["meets history", "crosses the Silk Road", "tastes like home"],
+    rotating: ["meets history", "tastes like home", "travels East"],
     end: "one plate at a time.",
     sub: "Inherited recipes from family kitchens and travels across the East: kebabs from Anatolia to Peshawar, a different cuisine every day of the week, and traditional drinks. Twenty-eight years of a family story, told through food.",
   },
