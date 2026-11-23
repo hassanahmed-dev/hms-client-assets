@@ -19,7 +19,7 @@ export const amour: Brand = {
   hero: {
     eyebrow: "Live bakery & cafe · Block 5, Clifton",
     start: "Fresh. Warm.",
-    rotating: ["Nutella brownies", "custom cakes", "chicken patties", "fruit tarts"],
+    rotating: ["brownies", "custom cakes", "hot patties", "fruit tarts"],
     end: "baked live, every day.",
     sub: "Amour bakes in front of you in Block 5 Clifton: breads, pastries, cakes and savouries made fresh through the day. Made with love, served with warmth.",
   },
