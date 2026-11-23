@@ -182,12 +182,14 @@ export function MenuSection() {
 export function Stats() {
   const { b } = useSite();
   const items = b.cats.reduce((a, c) => a + c.items.length, 0);
-  const close = b.hours.close === 0 ? 12 : b.hours.close;
+  const c = b.hours.close;
+  const close = c % 12 === 0 ? 12 : c % 12;
+  const ampm = c >= 12 && c < 24 ? " PM" : " AM";
   const data: [number, string, string, number?][] = [
     [Math.round(b.rating * 10), "", "Google rating", 10],
     [b.reviewsCount, "+", "Google reviews"],
     [items, "+", b.slug === "miami" ? "Ways to play & eat" : "Items on the menu"],
-    [close, " AM", "Open until, every night"],
+    [close, ampm, "Open until, every night"],
   ];
   return (
     <section className="relative py-16">
@@ -333,7 +335,10 @@ export function Visit() {
   const { b } = useSite();
   const st = useOpen();
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  const fmt = (h: number) => (h === 0 ? "12 AM" : h < 12 ? `${h} AM` : h === 12 ? "12 PM" : `${h - 12} PM`);
+  const fmt = (h: number) => {
+    const hh = Math.floor(h), m = Math.round((h - hh) * 60), t = hh % 12 === 0 ? 12 : hh % 12;
+    return `${t}${m ? `:${String(m).padStart(2, "0")}` : ""} ${hh >= 12 && hh < 24 ? "PM" : "AM"}`;
+  };
   const dir = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.mapQuery)}`;
   return (
     <section id="visit" className="section bg-surface/40">

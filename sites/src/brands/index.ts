@@ -4,9 +4,12 @@ import { miami } from "./miami";
 import { marina } from "./marina";
 import { ember } from "./ember";
 import { delights } from "./delights";
+import { lafuma } from "./lafuma";
+import { amour } from "./amour";
+import { cafe1947 } from "./cafe1947";
 import type { Brand } from "./types";
 
-export const brands = { vox, barasti, miami, marina, ember, delights };
+export const brands = { vox, barasti, miami, marina, ember, delights, lafuma, amour, cafe1947 };
 
 /** Pick the brand from the host name (hms-demo-barasti..., barasti.com, ...) or ?brand= in dev. */
 export function brandFromHost(host: string | null | undefined): Brand {
@@ -17,6 +20,9 @@ export function brandFromHost(host: string | null | undefined): Brand {
   if (h.includes("marina")) return marina;
   if (h.includes("ember")) return ember;
   if (h.includes("delights")) return delights;
+  if (h.includes("lafuma")) return lafuma;
+  if (h.includes("amour")) return amour;
+  if (h.includes("cafe1947")) return cafe1947;
   const env = process.env.NEXT_PUBLIC_BRAND as keyof typeof brands | undefined;
   return (env && brands[env]) || vox;
 }
