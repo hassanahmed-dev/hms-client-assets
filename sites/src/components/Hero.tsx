@@ -61,7 +61,7 @@ function PickCard() {
             initial={{ opacity: 0, scale: 1.2 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ opacity: { duration: 0.6 }, scale: { duration: 4.5, ease: "linear" } }} />
         </AnimatePresence>
         <span className="absolute left-3 top-3 rounded-full bg-black/55 px-3 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-white backdrop-blur">
-          {b.slug === "miami" ? "Tonight's pick" : "Most ordered"}
+          {b.scene === "neon" ? "Tonight's pick" : "Most ordered"}
         </span>
       </div>
       <div className="flex items-center justify-between gap-3 px-3 py-3">
@@ -105,7 +105,7 @@ export function Hero() {
       </motion.div>
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-background via-background/75 to-background/10" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-transparent to-background/60" />
-      {b.slug === "miami" && <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_30%,rgb(var(--c-primary)/0.35),transparent_55%),radial-gradient(ellipse_at_20%_90%,rgb(var(--c-secondary)/0.3),transparent_50%)] mix-blend-screen" />}
+      {b.scene === "neon" && <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_30%,rgb(var(--c-primary)/0.35),transparent_55%),radial-gradient(ellipse_at_20%_90%,rgb(var(--c-secondary)/0.3),transparent_50%)] mix-blend-screen" />}
       {b.scene === "grill" && <Embers />}
       <div aria-hidden className="noise absolute inset-0 -z-10" />
 
@@ -115,7 +115,7 @@ export function Hero() {
             <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-success" /></span>
             {b.hero.eyebrow}
           </motion.span>
-          {b.slug === "miami" && (
+          {b.scene === "neon" && (
             <motion.img src={b.logo} alt="" initial={{ scale: 0, rotate: -30 }} animate={{ scale: 1, rotate: 0 }} transition={{ delay: 0.5, type: "spring", stiffness: 120 }}
               className="flicker mt-6 h-20 w-20 rounded-full object-cover shadow-[0_0_30px_rgb(var(--c-primary)),0_0_70px_rgb(var(--c-secondary)/0.6)]" />
           )}
@@ -128,7 +128,7 @@ export function Hero() {
           </div>
           <motion.p initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.8, ease }} className="mt-5 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">{b.hero.sub}</motion.p>
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.15, duration: 0.8, ease }} className="mt-8 flex flex-col gap-3 xs:flex-row">
-            <Btn href="#menu">{b.slug === "miami" ? "See menu & book" : "Order now"}</Btn>
+            <Btn href="#menu">{b.scene === "neon" ? "See menu & book" : "Order now"}</Btn>
             <Btn href="#visit" variant="ghost" arrow={false} className="border-white/20 bg-black/30 backdrop-blur"><span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4" />{b.areaLine}</span></Btn>
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.35, duration: 0.8 }} className="mt-9 flex flex-wrap items-center gap-4">

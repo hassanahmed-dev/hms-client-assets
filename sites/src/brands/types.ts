@@ -2,7 +2,7 @@ export type Art =
   | "hot" | "iced" | "frappe" | "tea" | "mocktail" | "shake" | "burger" | "sandwich" | "fries"
   | "curry" | "bbq" | "pasta" | "bread" | "salad" | "soup" | "seafood" | "chicken" | "sheesha" | "game";
 
-export type Slug = "vox" | "barasti" | "miami" | "marina" | "ember" | "delights" | "lafuma" | "amour" | "cafe1947";
+export type Slug = "vox" | "barasti" | "miami" | "marina" | "ember" | "delights" | "lafuma" | "amour" | "cafe1947" | "sugarfix" | "glitch" | "steamy";
 
 export type Item = { n: string; p: number; d: string; t: Art; c: string; tag?: string };
 export type Category = { name: string; items: Item[] };

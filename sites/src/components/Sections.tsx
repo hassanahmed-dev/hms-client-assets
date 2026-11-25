@@ -183,12 +183,12 @@ export function Stats() {
   const { b } = useSite();
   const items = b.cats.reduce((a, c) => a + c.items.length, 0);
   const c = b.hours.close;
-  const close = c % 12 === 0 ? 12 : c % 12;
+  const close = Math.floor(c) % 12 === 0 ? 12 : Math.floor(c) % 12;
   const ampm = c >= 12 && c < 24 ? " PM" : " AM";
   const data: [number, string, string, number?][] = [
     [Math.round(b.rating * 10), "", "Google rating", 10],
     [b.reviewsCount, "+", "Google reviews"],
-    [items, "+", b.slug === "miami" ? "Ways to play & eat" : "Items on the menu"],
+    [items, "+", b.scene === "neon" ? "Ways to play & eat" : "Items on the menu"],
     [close, ampm, "Open until, every night"],
   ];
   return (
@@ -278,7 +278,7 @@ export function HowTo() {
     ["Pick your favourites", "Browse the menu and tap Add on what you want."],
     ["Review your order", "Change quantities and see your total, live."],
     ["Send on WhatsApp", `Your order goes straight to ${b.short} on WhatsApp.`],
-    [b.slug === "miami" ? "Walk in and play" : "Enjoy it fresh", "We confirm on WhatsApp and get it ready for you."],
+    [b.scene === "neon" ? "Walk in and play" : "Enjoy it fresh", "We confirm on WhatsApp and get it ready for you."],
   ];
   return (
     <section className="section bg-surface/40">
@@ -436,7 +436,7 @@ export function Cart() {
   const { b, cart, add, clear, count, total, open, setOpen, price } = useSite();
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
-  const modes = b.orderModes || (b.slug === "miami" ? ["Walk-in / booking", "Takeaway"] : b.slug === "barasti" ? ["Dine-in", "Pickup", "Delivery"] : ["Pickup", "Dine-in"]);
+  const modes = b.orderModes || (b.scene === "neon" ? ["Walk-in / booking", "Takeaway"] : b.slug === "barasti" ? ["Dine-in", "Pickup", "Delivery"] : ["Pickup", "Dine-in"]);
   const [mode, setMode] = useState(modes[0]);
   const send = () => {
     const lines = Object.entries(cart).map(([n, q]) => `• ${q} x ${n} = ${rs(q * price(n))}`).join("\n");
