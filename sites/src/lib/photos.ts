@@ -115,6 +115,10 @@ const P: Record<string, string[]> = {
   tart: ["1653491887846-781545ef38da", "1670819916757-e8d5935a6c65", "1614174486496-344ef3e9d870", "1628838617281-065549dd37fe"],
   pastry: ["1517427294546-5aa121f68e8a", "1582716401301-b2407dc7563d", "1602663491496-73f07481dbea", "1682596044365-eb5c3bc51555"],
   puff: ["1682263167429-0dbcf2c1e127", "1778489926852-b14c57bab23a", "1600521853186-93b88b3a07b0", "1622941367239-8acd68fa946d"],
+  benedict: ["1608039829572-78524f79c4c7", "1674315604997-bc5fcaa1ac32", "1779332500302-c0830964b9b2", "1720357146728-2c7544cdbda2"],
+  shakshuka: ["1590412200988-a436970781fa", "1614570218825-c2a3be79b0fd", "1520218576172-c1a2df3fa5fc", "1697546307745-c05002aa1c1e"],
+  omelette: ["1646579933415-92109f9805df", "1709754521379-00166805eea4", "1677137261161-0095c10418ef", "1639669794539-952631b44515"],
+  grillfish: ["1665401015549-712c0dc5ef85", "1666437469803-c6d5ba853a50", "1792460238294-130ac0a0a47e", "1785567773155-c673cf8297ec", "1700760933394-976f1d27dff2"],
   waffle: ["1734772045171-2af52aea78af", "1683040146484-a1f241a7c409", "1739907283389-2a2c05deb680", "1737700088850-d0b53f9d39ec", "1613483515012-8879be29b578"],
   kunafa: ["1778447812923-88a9e3e6b567", "1778447830669-8fe9626ed738"],
   dough: ["1649634437312-c005a922d448", "1592173376801-185310a68dea", "1634188023615-7e08901193b6", "1639678114484-fc09b70cad42"],
@@ -146,6 +150,11 @@ const P: Record<string, string[]> = {
 const RULES: [RegExp, string][] = [
   [/^still water$|^water$/i, "water"],
   [/solo gamer|arcade racer|ultimate house special|duo battle|wrap & drift|pro gamer|platter party|chinese & smash|squad hangout|friends catchup/i, "gaming"],
+  [/benedict|steak and eggs/i, "benedict"],
+  [/stuffed mushroom chicken|tuscany chicken/i, "grilled"],
+  [/shakshuka|turkish breakfast/i, "shakshuka"],
+  [/omelette/i, "omelette"],
+  [/snapper|sole|fish tikka/i, "grillfish"],
   [/chipotle platter|glitch special platter|bbq platter/i, "bbq"],
   [/ pizza$/i, "pizza"],
   [/lahori fried chicken/i, "friedchicken"],
@@ -370,6 +379,12 @@ export const SCENES: Record<Slug, { hero: string[]; story: string[]; cta: string
     story: ["1543198432-a20fa3055570", "1591814468924-caf88d1232e1", "1788603378122-1c3708b1a26a"],
     cta: "1695389189682-bab675486f83",
     stats: "1638502521795-89107ac5e246",
+  },
+  lalounge: {
+    hero: ["1558368417-57d31049c609", "1600891964092-4316c288032e", "1592494804071-faea15d93a8a", "1559742811-822873691df8"],
+    story: ["1773738214145-60c47b5f317d", "1615937657715-bc7b4b7962c1", "1766589758356-587980dff91d"],
+    cta: "1517957096399-3a4e3d34d95e",
+    stats: "1546964124-0cce460f38ef",
   },
 };
 
