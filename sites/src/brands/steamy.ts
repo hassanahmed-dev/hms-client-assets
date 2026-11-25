@@ -6,8 +6,8 @@ export const steamy: Brand = {
   name: "Steamy Bites",
   short: "Steamy Bites",
   tagline: "Dumplings, Noodles & Ramen, Bahadurabad",
-  logo: "/steamy/logo.svg",
-  cupLogo: "/steamy/logo.svg",
+  logo: "/steamy/logo.jpg",
+  cupLogo: "/steamy/logo.jpg",
   font: "playfair",
   theme: {
     background: "#07101f", surface: "#0c1729", card: "#122036", line: "#24395c",

@@ -6,8 +6,8 @@ export const glitch: Brand = {
   name: "The Glitch & Grill",
   short: "Glitch & Grill",
   tagline: "Food & Gaming Cafe, Gulshan-e-Iqbal",
-  logo: "/glitch/logo.svg",
-  cupLogo: "/glitch/logo.svg",
+  logo: "/glitch/logo.jpg",
+  cupLogo: "/glitch/logo.jpg",
   font: "bebas",
   theme: {
     background: "#08070f", surface: "#0f0d1a", card: "#161327", line: "#2e2850",
