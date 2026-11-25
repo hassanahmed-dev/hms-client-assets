@@ -21,7 +21,7 @@ export const glitch: Brand = {
     start: "Eat. Sleep.",
     rotating: ["Game.", "Grill.", "Play."],
     end: "Repeat.",
-    sub: "Burgers, BBQ, pizza and Chinese with PS5 sessions, driving simulators and table tennis under one roof. Combos for solo gamers up to squads of seven.",
+    sub: "Burgers, BBQ, pizza and Chinese with PS5 sessions, driving simulators and table tennis under one roof. Weekday offer Monday to Thursday: 40% off all games and 20% off all food.",
   },
   wa: "923331121051",
   phone: "0333 1121051",
@@ -123,6 +123,7 @@ export const glitch: Brand = {
   faq: [
     ["What are your timings?", "Monday to Thursday 2 PM to 1 AM, Friday to Sunday 3 PM to 3 AM."],
     ["What games do you have?", "PS5 with one or two controllers, racing simulators and table tennis."],
+    ["Do you have any offers?", "Yes. Monday to Thursday you get 40% off all games and 20% off all food."],
     ["Can we celebrate a birthday here?", "Yes. Send your date and number of guests on WhatsApp and we will set it up with a combo."],
     ["How do I order or book from this website?", "Add items or a combo and tap Send on WhatsApp. Your order reaches us and we confirm your time."],
     ["Where are you located?", "A 575, Block 5, Gulshan-e-Iqbal. Tap Directions to open us in Google Maps."],
