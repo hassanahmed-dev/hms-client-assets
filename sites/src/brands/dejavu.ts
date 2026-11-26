@@ -6,8 +6,8 @@ export const dejavu: Brand = {
   name: "Déjà Vu Restaurant BBQ & Grill",
   short: "Déjà Vu",
   tagline: "BBQ, Grill & Family Restaurant, Gulistan-e-Johar",
-  logo: "/dejavu/logo.svg",
-  cupLogo: "/dejavu/logo.svg",
+  logo: "/dejavu/logo.jpg",
+  cupLogo: "/dejavu/logo.jpg",
   font: "playfair",
   theme: {
     background: "#0c0a07", surface: "#14110c", card: "#1c1811", line: "#3d3322",

@@ -6,8 +6,8 @@ export const chailounge: Brand = {
   name: "Chai Lounge Restaurant",
   short: "Chai Lounge",
   tagline: "Chai, BBQ & Late Nights, Gulistan-e-Johar",
-  logo: "/chailounge/logo.svg",
-  cupLogo: "/chailounge/logo.svg",
+  logo: "/chailounge/logo.jpg",
+  cupLogo: "/chailounge/logo.jpg",
   font: "cormorant",
   theme: {
     background: "#120c08", surface: "#1a120c", card: "#221811", line: "#45331f",

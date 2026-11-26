@@ -6,8 +6,8 @@ export const cupshup: Brand = {
   name: "Cup Shup Cafe",
   short: "Cup Shup",
   tagline: "Friends x Chai x Khana, Gulistan-e-Johar",
-  logo: "/cupshup/logo.svg",
-  cupLogo: "/cupshup/logo.svg",
+  logo: "/cupshup/logo.jpg",
+  cupLogo: "/cupshup/logo.jpg",
   font: "bebas",
   theme: {
     background: "#0a0a0a", surface: "#121212", card: "#1a1a1a", line: "#333026",
