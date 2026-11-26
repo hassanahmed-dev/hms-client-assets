@@ -189,7 +189,7 @@ export function Stats() {
     [Math.round(b.rating * 10), "", "Google rating", 10],
     [b.reviewsCount, "+", "Google reviews"],
     [items, "+", b.scene === "neon" ? "Ways to play & eat" : "Items on the menu"],
-    [close, ampm, "Open until, every night"],
+    b.hours.late ? [Math.floor(b.hours.open) % 12 || 12, " PM", "Opens every evening"] : [close, ampm, "Open until, every night"],
   ];
   return (
     <section className="relative py-16">
@@ -360,7 +360,7 @@ export function Visit() {
               <ul className="mt-5 space-y-2 text-sm">
                 {days.map((d, i) => (
                   <li key={d} className={cn("flex justify-between rounded-xl px-3 py-2", st?.day === i ? "bg-primary/15 font-bold text-foreground" : "text-muted")}>
-                    <span>{d}</span><span>{fmt(b.hours.open)} – {fmt(b.hours.close)}</span>
+                    <span>{d}</span><span>{fmt(b.hours.open)} – {b.hours.late ? "late" : fmt(b.hours.close)}</span>
                   </li>
                 ))}
               </ul>

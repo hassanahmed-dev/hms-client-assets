@@ -115,6 +115,7 @@ const P: Record<string, string[]> = {
   tart: ["1653491887846-781545ef38da", "1670819916757-e8d5935a6c65", "1614174486496-344ef3e9d870", "1628838617281-065549dd37fe"],
   pastry: ["1517427294546-5aa121f68e8a", "1582716401301-b2407dc7563d", "1602663491496-73f07481dbea", "1682596044365-eb5c3bc51555"],
   puff: ["1682263167429-0dbcf2c1e127", "1778489926852-b14c57bab23a", "1600521853186-93b88b3a07b0", "1622941367239-8acd68fa946d"],
+  paratha: ["1668357530437-72a12c660f94", "1580064003296-29deb3521370", "1708782343717-be4ea260249a", "1683533743190-89c9b19f9ea6", "1683533761804-5fc12be0f684"],
   benedict: ["1608039829572-78524f79c4c7", "1674315604997-bc5fcaa1ac32", "1779332500302-c0830964b9b2", "1720357146728-2c7544cdbda2"],
   shakshuka: ["1590412200988-a436970781fa", "1614570218825-c2a3be79b0fd", "1520218576172-c1a2df3fa5fc", "1697546307745-c05002aa1c1e"],
   omelette: ["1646579933415-92109f9805df", "1709754521379-00166805eea4", "1677137261161-0095c10418ef", "1639669794539-952631b44515"],
@@ -150,6 +151,16 @@ const P: Record<string, string[]> = {
 const RULES: [RegExp, string][] = [
   [/^still water$|^water$/i, "water"],
   [/solo gamer|arcade racer|ultimate house special|duo battle|wrap & drift|pro gamer|platter party|chinese & smash|squad hangout|friends catchup/i, "gaming"],
+  [/family platter|bbq rice platter/i, "bbq"],
+  [/stuff cheese burger|crunchy fire chicken/i, "burger"],
+  [/mexican sandwich/i, "club"],
+  [/sizzling brownie/i, "brownie"],
+  [/sizzling boti|green chicken/i, "tikka"],
+  [/paratha$/i, "paratha"],
+  [/broast/i, "friedchicken"],
+  [/mongolian|garlic chilli beef|dry chilli/i, "chinese"],
+  [/fish sriracha|tandoori fish/i, "grillfish"],
+  [/doodh pati/i, "chai"],
   [/benedict|steak and eggs/i, "benedict"],
   [/stuffed mushroom chicken|tuscany chicken/i, "grilled"],
   [/shakshuka|turkish breakfast/i, "shakshuka"],
@@ -271,7 +282,7 @@ function hash(s: string) {
   return h;
 }
 
-function poolKey(name: string, type: string) {
+export function poolKey(name: string, type: string) {
   return RULES.find(([r]) => r.test(name))?.[1] || TYPE[type] || "hot";
 }
 
@@ -385,6 +396,24 @@ export const SCENES: Record<Slug, { hero: string[]; story: string[]; cta: string
     story: ["1773738214145-60c47b5f317d", "1615937657715-bc7b4b7962c1", "1766589758356-587980dff91d"],
     cta: "1517957096399-3a4e3d34d95e",
     stats: "1546964124-0cce460f38ef",
+  },
+  dejavu: {
+    hero: ["1632158930341-46604b637a0f", "1603496987351-f84a3ba5ec85", "1600891964092-4316c288032e", "1589302168068-964664d93dc0"],
+    story: ["1705359573325-f2006d5e459f", "1694579740719-0e601c5d2437", "1615937657715-bc7b4b7962c1"],
+    cta: "1632158929962-a929c9e87570",
+    stats: "1599487488170-d11ec9c172f0",
+  },
+  chailounge: {
+    hero: ["1720355340824-cd9f183ab0e3", "1772993628956-3655daf77d93", "1680206893968-01fe5583f6b5", "1636920272028-c27f1ae474c3"],
+    story: ["1765646772320-51e13b03f479", "1580600160741-4556fe4413b5", "1694579740719-0e601c5d2437"],
+    cta: "1719445096577-bc9b39ada75d",
+    stats: "1643553016671-5bbdd79e9265",
+  },
+  cupshup: {
+    hero: ["1765646772320-51e13b03f479", "1668357530437-72a12c660f94", "1606755962773-d324e0a13086", "1632158929962-a929c9e87570"],
+    story: ["1770820050126-7841295722b5", "1683533761804-5fc12be0f684", "1720355340824-cd9f183ab0e3"],
+    cta: "1772993628956-3655daf77d93",
+    stats: "1580064003296-29deb3521370",
   },
 };
 

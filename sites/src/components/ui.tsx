@@ -85,7 +85,7 @@ export function useOpen() {
       const h = Number(parts.find((p) => p.type === "hour")?.value || 0) % 24;
       const wd = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(parts.find((p) => p.type === "weekday")?.value || "Mon");
       const { open, close } = b.hours;
-      const isOpen = close > open ? h >= open && h < close : h >= open || h < close;
+      const isOpen = b.hours.late ? h >= Math.ceil(open) : close > open ? h >= open && h < close : h >= open || h < close;
       setS({ open: isOpen, day: wd });
     };
     calc();
