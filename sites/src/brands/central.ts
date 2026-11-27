@@ -10,9 +10,9 @@ export const central: Brand = {
   cupLogo: "/central/logo.jpg",
   font: "bebas",
   theme: {
-    background: "#0b0d12", surface: "#12151c", card: "#191d26", line: "#2f3542",
-    foreground: "#f3f2ee", muted: "#a8adb8", primary: "#f2a93b", secondary: "#ffd07e",
-    accent: "#ffe4b3", ink: "#0b0d12", success: "#5fd38d",
+    background: "#141414", surface: "#1c1c1c", card: "#242424", line: "#3a3a3a",
+    foreground: "#f3f2ee", muted: "#a8adb8", primary: "#f6c21c", secondary: "#ffdb6e",
+    accent: "#ffe9a8", ink: "#141414", success: "#5fd38d",
   },
   scene: "grill",
   orderModes: ["Dine-in", "Takeaway", "Delivery"],
