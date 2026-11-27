@@ -17,9 +17,16 @@ import { cupshup } from "./cupshup";
 import { roofyard } from "./roofyard";
 import { hawaii } from "./hawaii";
 import { terrace } from "./terrace";
+import { mamu } from "./mamu";
+import { mykarachi } from "./mykarachi";
+import { majestic } from "./majestic";
+import { kebabmore } from "./kebabmore";
+import { mamachai } from "./mamachai";
+import { raya } from "./raya";
+import { central } from "./central";
 import type { Brand } from "./types";
 
-export const brands = { vox, barasti, miami, marina, ember, delights, lafuma, amour, cafe1947, sugarfix, glitch, steamy, lalounge, dejavu, chailounge, cupshup, roofyard, hawaii, terrace };
+export const brands = { vox, barasti, miami, marina, ember, delights, lafuma, amour, cafe1947, sugarfix, glitch, steamy, lalounge, dejavu, chailounge, cupshup, roofyard, hawaii, terrace, mamu, mykarachi, majestic, kebabmore, mamachai, raya, central };
 
 /** Pick the brand from the host name (hms-demo-barasti..., barasti.com, ...) or ?brand= in dev. */
 export function brandFromHost(host: string | null | undefined): Brand {
@@ -43,6 +50,13 @@ export function brandFromHost(host: string | null | undefined): Brand {
   if (h.includes("roofyard")) return roofyard;
   if (h.includes("hawaii")) return hawaii;
   if (h.includes("terrace")) return terrace;
+  if (h.includes("mamu")) return mamu;
+  if (h.includes("mykarachi")) return mykarachi;
+  if (h.includes("majestic")) return majestic;
+  if (h.includes("kebabmore")) return kebabmore;
+  if (h.includes("mamachai")) return mamachai;
+  if (h.includes("raya")) return raya;
+  if (h.includes("central")) return central;
   const env = process.env.NEXT_PUBLIC_BRAND as keyof typeof brands | undefined;
   return (env && brands[env]) || vox;
 }
@@ -57,5 +71,6 @@ export function buildBrand(): Brand {
   return brandFromHost(process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || process.env.VERCEL_GIT_REPO_SLUG);
 }
 
-export const rs = (n: number) => "Rs. " + Math.round(n).toLocaleString("en-US");
+/** Price label. 0 means the cafe has not published a price: shown as "Ask price", never invented. */
+export const rs = (n: number) => (n > 0 ? "Rs. " + Math.round(n).toLocaleString("en-US") : "Ask price");
 export type { Brand };

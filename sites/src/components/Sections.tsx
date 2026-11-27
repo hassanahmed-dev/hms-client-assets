@@ -189,7 +189,7 @@ export function Stats() {
     [Math.round(b.rating * 10), "", "Google rating", 10],
     [b.reviewsCount, "+", "Google reviews"],
     [items, "+", b.scene === "neon" ? "Ways to play & eat" : "Items on the menu"],
-    b.hours.late ? [Math.floor(b.hours.open) % 12 || 12, " PM", "Opens every evening"] : [close, ampm, "Open until, every night"],
+    b.hours.allDay ? [24, "/7", "Open around the clock"] : b.hours.late ? [Math.floor(b.hours.open) % 12 || 12, " PM", "Opens every evening"] : [close, ampm, "Open until, every night"],
   ];
   return (
     <section className="relative py-16">
@@ -360,7 +360,7 @@ export function Visit() {
               <ul className="mt-5 space-y-2 text-sm">
                 {days.map((d, i) => (
                   <li key={d} className={cn("flex justify-between rounded-xl px-3 py-2", st?.day === i ? "bg-primary/15 font-bold text-foreground" : "text-muted")}>
-                    <span>{d}</span><span>{fmt(b.hours.open)} – {b.hours.late ? "late" : fmt(b.hours.close)}</span>
+                    <span>{d}</span><span>{b.hours.allDay ? "Open 24 hours" : <>{fmt(b.hours.open)} – {b.hours.late ? "late" : fmt(b.hours.close)}</>}</span>
                   </li>
                 ))}
               </ul>
@@ -439,8 +439,10 @@ export function Cart() {
   const modes = b.orderModes || (b.scene === "neon" ? ["Walk-in / booking", "Takeaway"] : b.slug === "barasti" ? ["Dine-in", "Pickup", "Delivery"] : ["Pickup", "Dine-in"]);
   const [mode, setMode] = useState(modes[0]);
   const send = () => {
-    const lines = Object.entries(cart).map(([n, q]) => `• ${q} x ${n} = ${rs(q * price(n))}`).join("\n");
-    const msg = `Hi ${b.short}! I'd like to place an order:\n\n${lines}\n\nTotal: ${rs(total)}\nType: ${mode}${name ? `\nName: ${name}` : ""}${note ? `\nNote: ${note}` : ""}`;
+    const ask = Object.keys(cart).some((n) => !price(n));
+    const lines = Object.entries(cart).map(([n, q]) => `• ${q} x ${n}${price(n) ? ` = ${rs(q * price(n))}` : " (price please)"}`).join("\n");
+    const tot = total ? `${rs(total)}${ask ? " + items to confirm" : ""}` : "please confirm";
+    const msg = `Hi ${b.short}! I'd like to place an order:\n\n${lines}\n\nTotal: ${tot}\nType: ${mode}${name ? `\nName: ${name}` : ""}${note ? `\nNote: ${note}` : ""}`;
     window.open(waLink(b.wa, msg), "_blank");
   };
   return (
@@ -449,7 +451,7 @@ export function Cart() {
         {count > 0 && !open && (
           <motion.button initial={{ y: 120 }} animate={{ y: 0 }} exit={{ y: 120 }} onClick={() => setOpen(true)}
             className="fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full bg-brand-gradient py-3 pl-4 pr-6 font-bold text-ink shadow-[0_20px_50px_-10px_rgb(var(--c-primary))]">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-sm text-foreground">{count}</span>View order · {rs(total)}
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-sm text-foreground">{count}</span>View order{total ? ` · ${rs(total)}` : ""}
           </motion.button>
         )}
       </AnimatePresence>
@@ -494,7 +496,7 @@ export function Cart() {
               </div>
               {count > 0 && (
                 <div className="border-t border-line p-5">
-                  <div className="flex items-center justify-between text-lg font-bold"><span>Total</span><span className="font-display text-2xl text-gradient">{rs(total)}</span></div>
+                  <div className="flex items-center justify-between text-lg font-bold"><span>Total</span><span className="font-display text-2xl text-gradient">{total ? rs(total) : "On WhatsApp"}</span></div>
                   <button onClick={send} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] py-4 font-bold text-[#06210f] transition hover:brightness-110"><MessageCircle className="h-5 w-5" />Send order on WhatsApp</button>
                   <button onClick={clear} className="mt-3 w-full text-xs text-muted underline">Clear order</button>
                 </div>
