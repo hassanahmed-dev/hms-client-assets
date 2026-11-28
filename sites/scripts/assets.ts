@@ -19,7 +19,7 @@ const ROOT = path.resolve(__dirname, "..");
 const PUB = path.join(ROOT, "public");
 const OUT = path.join(PUB, "stock");
 const GEN = path.join(ROOT, "src/lib/assets.generated.json");
-const SLUGS = ["vox", "barasti", "miami", "marina", "ember", "delights", "lafuma", "amour", "cafe1947", "sugarfix", "glitch", "steamy", "lalounge", "dejavu", "chailounge", "cupshup", "roofyard", "hawaii", "terrace", "mamu", "mykarachi", "majestic", "kebabmore", "mamachai", "raya", "central","bhaijaan","dawatinn","bhaiya","hotpot","karamkhan"] as const;
+const SLUGS = ["vox", "barasti", "miami", "marina", "ember", "delights", "lafuma", "amour", "cafe1947", "sugarfix", "glitch", "steamy", "lalounge", "dejavu", "chailounge", "cupshup", "roofyard", "hawaii", "terrace", "mamu", "mykarachi", "majestic", "kebabmore", "mamachai", "raya", "central","bhaijaan","dawatinn","bhaiya","hotpot","karamkhan","coconutgrove","pompei","testkitchen","loco","thestory"] as const;
 const EXT = /\.(jpe?g|png|webp|avif)$/i;
 
 const slugify = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
