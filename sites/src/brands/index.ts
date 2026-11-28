@@ -24,9 +24,14 @@ import { kebabmore } from "./kebabmore";
 import { mamachai } from "./mamachai";
 import { raya } from "./raya";
 import { central } from "./central";
+import { bhaijaan } from "./bhaijaan";
+import { dawatinn } from "./dawatinn";
+import { bhaiya } from "./bhaiya";
+import { hotpot } from "./hotpot";
+import { karamkhan } from "./karamkhan";
 import type { Brand } from "./types";
 
-export const brands = { vox, barasti, miami, marina, ember, delights, lafuma, amour, cafe1947, sugarfix, glitch, steamy, lalounge, dejavu, chailounge, cupshup, roofyard, hawaii, terrace, mamu, mykarachi, majestic, kebabmore, mamachai, raya, central };
+export const brands = { vox, barasti, miami, marina, ember, delights, lafuma, amour, cafe1947, sugarfix, glitch, steamy, lalounge, dejavu, chailounge, cupshup, roofyard, hawaii, terrace, mamu, mykarachi, majestic, kebabmore, mamachai, raya, central, bhaijaan, dawatinn, bhaiya, hotpot, karamkhan };
 
 /** Pick the brand from the host name (hms-demo-barasti..., barasti.com, ...) or ?brand= in dev. */
 export function brandFromHost(host: string | null | undefined): Brand {
@@ -57,6 +62,11 @@ export function brandFromHost(host: string | null | undefined): Brand {
   if (h.includes("mamachai")) return mamachai;
   if (h.includes("raya")) return raya;
   if (h.includes("central")) return central;
+  if (h.includes("bhaijaan")) return bhaijaan;
+  if (h.includes("dawatinn")) return dawatinn;
+  if (h.includes("bhaiya")) return bhaiya;
+  if (h.includes("hotpot")) return hotpot;
+  if (h.includes("karamkhan")) return karamkhan;
   const env = process.env.NEXT_PUBLIC_BRAND as keyof typeof brands | undefined;
   return (env && brands[env]) || vox;
 }
