@@ -19,7 +19,7 @@ export const karamkhan: Brand = {
   hero: {
     eyebrow: "Wellington Street · Saddar",
     start: "Gur wali chai",
-    rotating: ["since forever.", "and samosa.", "for breakfast."],
+    rotating: ["every morning.", "and samosa.", "for breakfast."],
     end: "Chai, desi breakfast and parathas.",
     sub: "Gur wali chai, doodh patti and Kashmiri chai, with daal chana, bhindi, anda ghotala, parathas and samosas. Every day from 6 AM till 11 PM.",
   },
